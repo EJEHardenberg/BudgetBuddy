@@ -52,10 +52,15 @@ class Database{
 		$size = mcrypt_get_iv_size(MCRYPT_CAST_256, MCRYPT_MODE_CFB);
     	$salt =  base64_encode(mcrypt_create_iv($size, MCRYPT_DEV_RANDOM));
     	$salted = $salt . $pass;
-    			var_dump($salted);
-    	$useHash = hash('sha256',$salted);
-    	$query = 'INSERT INTO accounts (username,salt,hash,theme) VALUES ("' . $name . '", "' . $salt . '", "' . $useHash . '", "' . $theme . '");';
+    	
+    	//I have to base 64 encode or mysql complains
+    	$useHash = base64_encode(hash('sha256',$salted));
+    	$query = 'INSERT INTO accounts (username,salt,hash,theme) VALUES (?,?,?,?);';
     	$statement = $this->link->prepare($query);
+    	$statement->bindValue(1, $name, PDO::PARAM_STR);
+    	$statement->bindValue(2, $salt, PDO::PARAM_STR);
+    	$statement->bindValue(3, $useHash, PDO::PARAM_STR);
+    	$statement->bindValue(4, 'metal',PDO::PARAM_STR);
     	return $statement->execute(); //returns true or false
 	}
 
@@ -72,16 +77,10 @@ class Database{
 		$result = $results[0];
 		//prepend the salt to the password and hash it and see if it matches
 		$salted = $result['salt'] . $pass;
-		var_dump($salted);
-		$checkHash = hash('sha256', $salted);
-		echo '   <br />';
-		var_dump($checkHash);
-		echo '   <br />';
-		var_dump($result['hash']);
-		echo '<br />';
-		var_dump($checkHash == $result['hash']);
-
-
+		//I have to base 64 encode or mysql complains
+		$checkHash = base64_encode(hash('sha256', $salted));
+		
+		var_dump(CRYPT_BLOWFISH);
 	}
 
 }
