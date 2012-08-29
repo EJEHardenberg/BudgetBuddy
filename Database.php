@@ -48,7 +48,7 @@ class Database{
 		//get our defaults and crpyo on
 		if(!isset($this->link)){ return false;}
 
-		$theme = 'metal';
+		$theme = DEFAULT_THEME;
 		$size = mcrypt_get_iv_size(MCRYPT_CAST_256, MCRYPT_MODE_CFB);
     	$salt =  base64_encode(mcrypt_create_iv($size, MCRYPT_DEV_RANDOM));
     	$salted = $salt . $pass;
@@ -60,8 +60,22 @@ class Database{
     	$statement->bindValue(1, $name, PDO::PARAM_STR);
     	$statement->bindValue(2, $salt, PDO::PARAM_STR);
     	$statement->bindValue(3, $useHash, PDO::PARAM_STR);
-    	$statement->bindValue(4, 'metal',PDO::PARAM_STR);
+    	$statement->bindValue(4, DEFAULT_THEME,PDO::PARAM_STR);
     	return $statement->execute(); //returns true or false
+	}
+
+	private function compareHashes($hash1, $hash2){
+		$hashgood = true;
+		for($i = 0; $i < strlen($hash1); $i++){
+			if($hash1[$i] != $hash2[$i]){
+				$hashgood = false;
+			}
+		}
+		return $hashgood;
+	}
+
+	public function getUserTheme($name){
+		if(!isset($this->link)){ return DEFAULT_THEME;}		
 	}
 
 	public function attemptLogin($name, $pass){
@@ -70,7 +84,8 @@ class Database{
 		//We can grab some of the automated stuff:
 		$ip = $_SERVER['REMOTE_ADDR'];
 		//We need the hash and salt to verify the password
-		$selector = $this->link->prepare('select salt, hash from accounts where username = "' . $name . '";');
+		$selector = $this->link->prepare('select salt, hash from accounts where username = ?;');
+		$selector->bindValue(1,$name,PDO::PARAM_STR);
 		$selector->execute();
 		$results = $selector->fetchall();
 		//There should be only one returned array because of unique ness
@@ -79,8 +94,30 @@ class Database{
 		$salted = $result['salt'] . $pass;
 		//I have to base 64 encode or mysql complains
 		$checkHash = base64_encode(hash('sha256', $salted));
+		//Now check the hash... sloooowly
 		
-		var_dump(CRYPT_BLOWFISH);
+		if($this->compareHashes($checkHash, $result['hash'])){
+			//Valid!''
+			$log = $this->link->prepare('INSERT INTO logins (username, success, ip_address, logged_time) VALUES ( ?,?,?,?);');
+			$log->bindValue(1,$name,PDO::PARAM_STR);
+			$log->bindValue(2,true,PDO::PARAM_INT);
+			$log->bindValue(3,$ip,PDO::PARAM_STR);
+			$log->bindValue(4,date('Y-m-d H:i:s'),PDO::PARAM_STR);
+			$log->execute();
+			return true;
+		}else{
+			//Send back the error!
+			$log = $this->link->prepare('INSERT INTO logins (username, success, ip_address, logged_time) VALUES ( ?,?,?,?);');
+			$log->bindValue(1,$name,PDO::PARAM_STR);
+			$log->bindValue(2,false,PDO::PARAM_INT);
+			$log->bindValue(3,$ip,PDO::PARAM_STR);
+			$log->bindValue(4,date('Y-m-d H:i:s'),PDO::PARAM_STR);
+			$log->execute();
+			
+			return false;
+		}
+
+
 	}
 
 }

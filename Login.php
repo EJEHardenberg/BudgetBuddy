@@ -4,10 +4,18 @@
 	require_once('Database.php');
 	$db = new Database();
 
+	$loginOk = null;
 	//If we've posted from this page then we'll probably be logging in
 	if(isset($_POST['username'])){
 		$db->connect();
-		$db->attemptLogin($_POST['username'],$_POST['password']);
+		if($db->attemptLogin($_POST['username'],$_POST['password'])){
+			$_SESSION['userID'] = $_POST['username'];
+			unset($_POST['password']);
+			$loginOk = true;
+		}else{
+			$loginOk = false;
+		}
+
 	}
 
 
@@ -25,6 +33,17 @@
 			<!-- Sign in form -->
 			<form id="Login" name="login" method="post" action="Login.php">
 				<h1 class="Login">Budget Buddy Log In</h1>
+				<?php
+					//Status messages
+					if(!is_null($loginOk)){
+						if($loginOk){
+							echo '<span id="Info">  Login Succesful <br /> Redirecting to Home </span>';
+							echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/index.php" />'; 
+						}else{
+							echo '<span id="Info">  Invalid Login name or password</span>';
+						}
+					}
+				?>
 				<p class = "Login">Please log in below</p>
 				<!--Login Name -->
 				<label class="Login">Log In Name<br />
