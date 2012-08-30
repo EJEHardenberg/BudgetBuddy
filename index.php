@@ -1,10 +1,6 @@
 <?php
 //Start the Session if ones not already going on
-if(is_null($_SESSION['userID'])){
-	echo 'SESSION STARTED';
-	var_dump($_SESSION['userID']);
-	session_start();
-}
+session_start();
 //Get config information
 include_once( "../config.php");
 
@@ -18,7 +14,7 @@ include_once( "../config.php");
 		//Echo out the proper theme
 		if(!isset($_SESSION['userID'])){
 			echo '<link rel="stylesheet" href="/BudgetBuddy/CSS/'  . DEFAULT_THEME . 'Theme.css" type="text/css" />';
-			echo '<meta http-equiv="REFRESH" content="4; url=/BudgetBuddy/Login.php" />';
+			header('Location:BudgetBuddy/Login.php'); //redirect
 		}else{
 			//We need the database for personalized themes
 			require_once('Database.php');

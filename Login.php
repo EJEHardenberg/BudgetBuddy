@@ -1,6 +1,6 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <?php
 	//Set up neccesary connections to a Model for database work
+	session_start();
 	require_once('Database.php');
 	$db = new Database();
 
@@ -11,7 +11,8 @@
 		if($db->attemptLogin($_POST['username'],$_POST['password'])){
 			$_SESSION['userID'] = $_POST['username'];
 			unset($_POST['password']);
-			$loginOk = true;
+			//Redirect back to index
+			header('Location:/BudgetBuddy/index.php');
 		}else{
 			$loginOk = false;
 		}
@@ -20,6 +21,7 @@
 
 
 ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 
 	<head>
@@ -38,8 +40,6 @@
 					if(!is_null($loginOk)){
 						if($loginOk){
 							echo '<span id="Info">  Login Succesful <br /> Redirecting to Home </span>';
-							echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/index.php" />'; 
-							var_dump($_SESSION);
 						}else{
 							echo '<span id="Info">  Invalid Login name or password</span>';
 						}
