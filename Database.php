@@ -4,16 +4,15 @@
 /*Database Class for logging in and verifying 
 /*and inserting sign ups.
 /*********************************************/
-//Get database information
-include "../config.php";
 
+include_once( "../config.php");
 class Database{
 	private $link = '';
 
 	public function __construct(){}
 
 	public function connect(){
-		$this->link =  new PDO('mysql:dbname='. DATABASE_NAME .';host='. DATABASE_HOST,DATABASE_USER,DATABASE_PASS);
+		$this->link =  new PDO('mysql:host='.DATABASE_HOST.';dbname='.DATABASE_NAME,DATABASE_USER,DATABASE_PASS);
 		$this->link->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 		$this->link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		if(isset($this->link)){
@@ -35,7 +34,7 @@ class Database{
 		}
 		
 		//Run the query and check for empty set
-		$result = $this->link->prepare('select * from accounts where username = "' . $name . '";');
+		$result = $this->link->prepare('select * from userinfo where username = "' . $name . '";');
 		$result->execute();
 		if(count($result->fetchall())  > 0){
 			return false;
@@ -55,7 +54,7 @@ class Database{
     	
     	//I have to base 64 encode or mysql complains
     	$useHash = base64_encode(hash('sha256',$salted));
-    	$query = 'INSERT INTO accounts (username,salt,hash,theme) VALUES (?,?,?,?);';
+    	$query = 'INSERT INTO userinfo (username,salt,hash,theme) VALUES (?,?,?,?);';
     	$statement = $this->link->prepare($query);
     	$statement->bindValue(1, $name, PDO::PARAM_STR);
     	$statement->bindValue(2, $salt, PDO::PARAM_STR);
@@ -75,16 +74,25 @@ class Database{
 	}
 
 	public function getUserTheme($name){
-		if(!isset($this->link)){ return DEFAULT_THEME;}		
+		if(!isset($this->link)){ return DEFAULT_THEME;}	
+
+		$request = $this->link->prepare('SELECT theme FROM userinfo WHERE username = ? ;')	;
+		$request->bindValue(1,$name,PDO::PARAM_STR);
+		$request->execute();
+		//There should be only one returned
+		$result = $request->fetchall();
+		$theme = $result[0];
+		return $theme['theme'];
 	}
 
 	public function attemptLogin($name, $pass){
+		if(!isset($this->link)){ return false;}
 		//we should insure that both the name and password aren't injected evil code.
 		
 		//We can grab some of the automated stuff:
 		$ip = $_SERVER['REMOTE_ADDR'];
 		//We need the hash and salt to verify the password
-		$selector = $this->link->prepare('select salt, hash from accounts where username = ?;');
+		$selector = $this->link->prepare('select salt, hash from userinfo where username = ?;');
 		$selector->bindValue(1,$name,PDO::PARAM_STR);
 		$selector->execute();
 		$results = $selector->fetchall();
@@ -116,7 +124,39 @@ class Database{
 			
 			return false;
 		}
+	}
 
+	private function matchNameToID($username){
+		//Fairly simple function
+		if(!isset($this->link)){ return false;}
+		$matchQ = $this->link->prepare('SELECT userid FROM userinfo WHERE username = ? ;');
+		$matchQ->bindValue(1,$username,PDO::PARAM_STR);
+		$matchQ->execute();
+
+		$results = $matchQ->fetchall();
+		$result = $results[0];
+		return $result['userid'];
+	}
+
+	public function getHomeData($username){
+		//Gives back an associative array containing:
+		//last login, account balances. last login will be first, balances after
+		if(!isset($this->link)){ return false;}
+
+		//Get last login
+		$lastLog = $link->prepare('SELECT logged_time FROM logins WHERE username = ? ORDER BY logged_time DESC limit 1;');
+		$lastLog->bindValue(1,$username,PDO::PARAM_STR);
+		$lastLog->execute();
+		$result = $lastLog->fetchall();
+		$result = $result[0];
+		$lastLogin = $result['logged_time'];
+
+		//Get the account balances
+		$actGet = $link->prepare('SELECT * FROM accounts WHERE userod = ?');
+		$actGet->bindValue(1,$this->matchNameToID($username),PDO::PARAM_int);
+		$actGet->execute();
+
+		var_dump($actGet->fetchall());
 
 	}
 

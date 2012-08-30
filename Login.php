@@ -39,6 +39,7 @@
 						if($loginOk){
 							echo '<span id="Info">  Login Succesful <br /> Redirecting to Home </span>';
 							echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/index.php" />'; 
+							var_dump($_SESSION);
 						}else{
 							echo '<span id="Info">  Invalid Login name or password</span>';
 						}
