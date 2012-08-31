@@ -144,19 +144,24 @@ class Database{
 		if(!isset($this->link)){ return false;}
 
 		//Get last login
-		$lastLog = $link->prepare('SELECT logged_time FROM logins WHERE username = ? ORDER BY logged_time DESC limit 1;');
+		$lastLog = $this->link->prepare('SELECT logged_time FROM logins WHERE username = ? ORDER BY logged_time DESC limit 1;');
 		$lastLog->bindValue(1,$username,PDO::PARAM_STR);
 		$lastLog->execute();
 		$result = $lastLog->fetchall();
 		$result = $result[0];
 		$lastLogin = $result['logged_time'];
 
+
+
 		//Get the account balances
-		$actGet = $link->prepare('SELECT * FROM accounts WHERE userod = ?');
-		$actGet->bindValue(1,$this->matchNameToID($username),PDO::PARAM_int);
+		$actGet = $this->link->prepare('SELECT * FROM accounts WHERE userid = ?');
+		$actGet->bindValue(1,$this->matchNameToID($username),PDO::PARAM_INT);
 		$actGet->execute();
 
-		var_dump($actGet->fetchall());
+		//IF we get no accounts the home page is going to prompt to send them to make accounts page
+		$accounts = $actGet->fetchall();
+
+		return array($lastLogin,$accounts);
 
 	}
 

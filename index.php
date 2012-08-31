@@ -20,7 +20,7 @@ include_once( "../config.php");
 			require_once('Database.php');
 			$db = new Database();
 			$db->connect();
-			$theme = $db->getUserTheme();
+			$theme = $db->getUserTheme($_SESSION['userID']);
 			//We shouldn't have to worry about theme being null or anything because we're logged in and there must be 
 			//a theme associated with a user, but whether or not that theme exists is iffy
 			if(file_exists('/BudgetBuddy/CSS/' . $theme . 'Theme.css')){
@@ -37,16 +37,19 @@ include_once( "../config.php");
 
 require_once('/Controller/Home.php');
 //This is where I'd include the users home page
+$homeControl = new Home($_SESSION['userID']);
 
 ?>
+
+<div class = "Background">
 
 <?php
 
-//And this is where I'd place menus and such
+$homeControl->render();
 
 ?>
 
-
+</div>
 </body>
 
 </html>

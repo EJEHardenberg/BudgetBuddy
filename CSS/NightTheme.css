@@ -1,0 +1,48 @@
+body{
+	background-color: #A8A8A8;
+}
+
+/*http://colorschemedesigner.com/#4511Tdne-w0w0*/
+div.Background{
+	/*These are essentially the same settings as the login page*/
+	background-color: #262335;
+	font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+	font-size:12px;
+	width: 200px;
+	min-width: 200px;
+	min-height: 400px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 14px;
+	padding-left: 14px;
+	padding-right: 14px;
+	padding-bottom: 25px;
+	text-align: center;
+}
+h1.Welcome{
+	color: #807BA9;
+	font-size: 14px;
+	font-weight: bold;
+	margin-bottom: 8px;	
+}
+label.Welcome{
+	display: block;
+	font-size: 13px;
+}
+p.Date{
+	font-size: 10px;
+	color: #8B87A9;
+}
+div.Accounts{
+	background-color: #2F2F4F;
+	display: block;
+	font-size:  12px;
+	min-height: 200px;
+}
+h2.Accounts{
+	font-size: 13px;
+	font-weight: bold;
+	text-decoration: underline;
+	text-align: left;
+	color: #8F8F8D;
+}
