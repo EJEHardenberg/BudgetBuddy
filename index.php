@@ -14,7 +14,7 @@ include_once( "../config.php");
 		//Echo out the proper theme
 		if(!isset($_SESSION['userID'])){
 			echo '<link rel="stylesheet" href="/BudgetBuddy/CSS/'  . DEFAULT_THEME . 'Theme.css" type="text/css" />';
-			header('Location:BudgetBuddy/Login.php'); //redirect
+			header('Location:../BudgetBuddy/Login.php'); //redirect
 		}else{
 			//We need the database for personalized themes
 			require_once('Database.php');

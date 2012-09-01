@@ -86,6 +86,16 @@ class HomeView{
 		echo '</div>';
 	}
 
+	function logout(){
+		//Send used back to the Login page and destroys the session
+		echo '<div class = Logout">';
+		echo '<form name = "logout" method="post" action = "../BudgetBuddy/Logout.php">';
+		echo '<button class = "Logout"  type="submit">Logout</button>';
+		echo '</form>';
+		echo '</div>';
+
+	}
+
 
 }
 

@@ -66,7 +66,7 @@ class Home {
 		}
 		//Render the Menu Items
 		$view->displayMenus($this->links);
-
+		$view->logout();
 	}
 
 

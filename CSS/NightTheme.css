@@ -155,3 +155,18 @@ span.MenuSpacer{
 	float: left;
 	width: 2px;
 }
+div.Logout{
+	margin-left: auto;
+	margin-right: auto;
+}
+button.Logout{
+	text-align: center;
+	width: 70%;
+
+	-moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: 2px 2px 3px #666;
+    -webkit-box-shadow: 2px 2px 3px #666;
+    box-shadow: 2px 2px 3px #666;	
+}
