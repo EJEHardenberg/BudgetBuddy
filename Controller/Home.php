@@ -13,6 +13,7 @@ class Home {
 	private $username = null;
 	private $lastLogin = null ;
 	private $accounts = null;
+	private $links = array( 'CheckBook' => 'Check Book', 'Reports' => 'Reports' ,'Settings' => 'Settings');
 
 	public function __construct($user){
 		//We can populate theme and anything else from knowing the user to lookup
@@ -53,10 +54,19 @@ class Home {
 	public function render(){
 		require_once('../BudgetBuddy/View/' . $this->viewName . '.php');
 		$view = new $this->viewName;
+		echo '<h1 class ="Home">Budget Buddy Home</h1><hr>';
+		//Render welcome and last login time
 		$view->getWelcome($this->username,$this->lastLogin);
+		//Render accounts and button to add a new one
 		if(!is_null($this->accounts)){
 			$view->getAccounts($this->accounts);
+		}else{
+			//Render The OMG you don't have anything yet message
+			$view->noAccounts();
 		}
+		//Render the Menu Items
+		$view->displayMenus($this->links);
+
 	}
 
 

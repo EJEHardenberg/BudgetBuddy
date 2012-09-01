@@ -33,17 +33,55 @@ class HomeView{
 
 		//Echo out each account
 		foreach ($accounts as $account) {
-			var_dump($account);
+			//var_dump($account);
+			echo '<li><span class = "Spacer"><br /></span><span class = "AccountName">' . $account['name'] . ': </span><span class ="AccountAmount">$' . $account['amount'] . '</span></li>';
+			echo '<hr class ="Accounts">';
 		}
 
-		echo '</ul>';
+		echo '</ul><div class = "largespacer"></div>';
+		$this->createAccountButton();
 		echo '</div>';
 		//Returns true
 		return true;
 	}
 
+	function noAccounts(){
+		echo '<div class = "Accounts">';
+		echo '<h2 class = "Accounts">You have no accounts!</h2>';
+		echo '</ul><div class = "largespacer"></div>';
+		echo "<div class = 'Info'>Looks like you haven't made any accounts yet! Click the button below to get started!</div>";
+		echo '</ul><div class = "largespacer"></div>';
+		echo '</ul><div class = "largespacer"></div>';
+
+		$this->createAccountButton();
+		echo '</div>';
+
+	}
+
 	function createAccountButton(){
 		//Displayed if there are no accounts
+		echo '<form name="accounts" method="post" action="Login.php">';
+		echo '<button type="submit">Add an Account</button>';
+		echo '</form>'
+;	}
+
+	function displayMenus($links){
+		//Home page links to settings, checkbook and reports
+		echo '<div class = "Menus">';
+		echo '<div class = "largespacer"></div>';
+		//use a horizontal list
+		echo '<ul class = "Menu">';
+
+		foreach ($links as $link) {
+			echo '<li class="Menu">';
+			echo '<form name = "' . $link . '" method="post" action = "../BudgetBuddy/Controller/' . str_replace(' ', '', $link) . '.php">';
+			echo '<button class = "Menu"  type="submit">'. $link .'</button>';
+			echo '</form>';
+			echo '</li><span class = "MenuSpacer"><br /></span>';
+		}
+
+		echo '</ul>';
+		echo '</div>';
 	}
 
 
