@@ -69,9 +69,10 @@ class HomeView{
 		//Home page links to settings, checkbook and reports
 		echo '<div class = "Menus">';
 		echo '<div class = "largespacer"></div>';
+
 		//use a horizontal list
 		echo '<ul class = "Menu">';
-
+	
 		foreach ($links as $link) {
 			echo '<li class="Menu">';
 			echo '<form name = "' . $link . '" method="post" action = "../BudgetBuddy/Controller/' . str_replace(' ', '', $link) . '.php">';
@@ -79,6 +80,7 @@ class HomeView{
 			echo '</form>';
 			echo '</li><span class = "MenuSpacer"><br /></span>';
 		}
+		
 
 		echo '</ul>';
 		echo '</div>';
