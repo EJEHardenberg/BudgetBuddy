@@ -6,12 +6,14 @@
 /*********************************************/
 
 include_once( "../config.php");
+
 class Database{
 	private $link = '';
 
 	public function __construct(){}
 
 	public function connect(){
+
 		$this->link =  new PDO('mysql:host='.DATABASE_HOST.';dbname='.DATABASE_NAME,DATABASE_USER,DATABASE_PASS);
 		$this->link->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 		$this->link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -34,7 +36,8 @@ class Database{
 		}
 		
 		//Run the query and check for empty set
-		$result = $this->link->prepare('select * from userinfo where username = "' . $name . '";');
+		$result = $this->link->prepare('select * from userinfo where username = ?;');
+		$result->bindValue(1,$name,PDO::PARAM_STR);
 		$result->execute();
 		if(count($result->fetchall())  > 0){
 			return false;

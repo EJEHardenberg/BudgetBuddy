@@ -38,6 +38,8 @@ div.Accounts{
 	display: block;
 	font-size:  12px;
 	min-height: 200px;
+	height: 200px;
+	
 }
 h1.Home{
 	color: #FFFFFF;
@@ -169,4 +171,9 @@ button.Logout{
     -moz-box-shadow: 2px 2px 3px #666;
     -webkit-box-shadow: 2px 2px 3px #666;
     box-shadow: 2px 2px 3px #666;	
+}
+/*Mainly apply to divs to make scrollage*/
+#Scrollable{
+	overflow: auto;
+	padding: 4px;
 }
