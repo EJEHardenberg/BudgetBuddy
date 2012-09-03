@@ -50,7 +50,8 @@ class CheckBook{
 				if(is_null($this->accountToLoad)){
 					echo '<span class = "Info">You have no account to load, use the buttons above to add some.</span>';
 				}else{
-					$curMonth = date('m');
+					$curDate = date('Y-m-d H:i:s');
+
 				}
 				break;
 		}
