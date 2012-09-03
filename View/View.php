@@ -23,7 +23,7 @@ class View {
 		//"2012-08-30 18:47:37" -> 08/30/12
 		$midway = explode(' ',$date);
 		$dString = explode('-',$midway[0]);
-		return $hour . ':'  . $tString[1] . $ampm . ' on ' . $dString[1] . '/' . $dString[2] . '/' . substr($dString[0],-2);
+		return $dString[1] . '/' . $dString[2] . '/' . substr($dString[0],-2);
 	}
 
 	function displayMenus($links){
@@ -35,8 +35,9 @@ class View {
 		echo '<ul class = "Menu">';
 	
 		foreach ($links as $link) {
+
 			echo '<li class="Menu">';
-			echo '<form name = "' . $link . '" method="post" action = "../BudgetBuddy/Page/' . str_replace(' ', '', $link) . 'View.php">';
+			echo '<form name = "' . $link . '" method="post" action = "/BudgetBuddy/' . str_replace('Home', 'index', str_replace(' ', '', $link)) . '.php">';
 			echo '<button class = "Menu"  type="submit">'. $link .'</button>';
 			echo '</form>';
 			echo '</li><span class = "MenuSpacer"><br /></span>';

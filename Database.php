@@ -129,7 +129,7 @@ class Database{
 		}
 	}
 
-	private function matchNameToID($username){
+	public function matchNameToID($username){
 		//Fairly simple function
 		if(!isset($this->link)){ return false;}
 		$matchQ = $this->link->prepare('SELECT userid FROM userinfo WHERE username = ? ;');
@@ -167,6 +167,24 @@ class Database{
 		return array($lastLogin,$accounts);
 
 	}
+
+	public function getAccountNamesByID($userId){
+		if(is_null($this->link)){return false;}
+
+		//Snag Account Names
+		$qAccount = $this->link->prepare('SELECT name FROM accounts WHERE userid = ?;');
+		$qAccount->bindValue(1,$userId,PDO::PARAM_INT);
+		$qAccount->execute();
+
+		$results =  $qAccount->fetchall();
+		$names = array();
+		foreach ($results as $result) {
+			$names[] = $result['name'];
+		}
+		return $names;
+
+	}
+
 
 }
 
