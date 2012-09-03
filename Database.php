@@ -188,13 +188,14 @@ class Database{
 	public function getTransactionsForMonth($month,$userid,$accountname){
 		//give this function (for month) the last day of the month. so for septemeber it be 2012-09-30 23:59:59
 		//select * from logins where logged_time betweeen date_sub(now(), interval 1 month) and now();
-		$log = $this->link->prepare('SELECT * from transactions WHERE date between DATE_SUB(?, INTERVAL 1 MONTH) and ? AND userid = ? AND accountname = ?');
+		$log = $this->link->prepare('SELECT id,date,name,amount from transactions WHERE date between DATE_SUB(?, INTERVAL 1 MONTH) and ? AND userid = ? AND accountname = ?');
 		$log->bindValue(1,$month,PDO::PARAM_STR);
 		$log->bindValue(2,$month,PDO::PARAM_STR);
 		$log->bindValue(3,$userid,PDO::PARAM_STR);
 		$log->bindValue(4,$accountname,PDO::PARAM_STR);
 		$log->execute();
-		var_dump($log->fetchall());
+		
+		return $log->fetchall();
 	}
 
 

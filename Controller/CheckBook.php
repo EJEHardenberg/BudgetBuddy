@@ -51,8 +51,19 @@ class CheckBook{
 					echo '<span class = "Info">You have no account to load, use the buttons above to add some.</span>';
 				}else{
 					$month = date('Y-m-t 23:59:59');
-					var_dump($this->accountToLoad);
-					$this->db->getTransactionsForMonth($month,$this->userid,$this->accountToLoad);
+					//I wonder if this would break if the accountTOLoad was null.
+					$transactions = $this->db->getTransactionsForMonth($month,$this->userid,$this->accountToLoad);
+					//This seems like an awfully good place for a table, or at least something like it
+					echo '<table class ="Transaction">';
+					echo '<tr><th>ID</th><th>Date</th><th>Name</th><th>Amount</th></tr>';
+					foreach ($transactions as $transaction) {
+						echo '<tr>';
+						foreach ($transaction as $key => $value) {
+							var_dump( $transaction[$key] );
+						}
+						echo '</tr>';
+					}
+					echo '</table>';
 
 				}
 				break;
