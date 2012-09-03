@@ -32,7 +32,7 @@ class CheckBook{
 
 	public function parseActions(){
 		$url  = explode(':',end(explode('/', $_SERVER['REQUEST_URI']))) ;
-		//$acct = $url[0];
+		$this->accountToLoad = $url[0];
 		$this->actionToTake = $url[1];
 	}
 
@@ -50,7 +50,9 @@ class CheckBook{
 				if(is_null($this->accountToLoad)){
 					echo '<span class = "Info">You have no account to load, use the buttons above to add some.</span>';
 				}else{
-					$curDate = date('Y-m-d H:i:s');
+					$month = date('Y-m-t 23:59:59');
+					var_dump($this->accountToLoad);
+					$this->db->getTransactionsForMonth($month,$this->userid,$this->accountToLoad);
 
 				}
 				break;
@@ -67,7 +69,7 @@ class CheckBook{
 		echo '<div class = "CheckBook">';
 		//Render the tabs for changing accounts
 		$view->displayAccountTabs($this->accounts );
-		$view->displaySubMenus($this->subMenu,$accountToLoad);	
+		$view->displaySubMenus($this->subMenu,$this->accountToLoad);	
 		//This is where the action takes affect, display should show transactions
 		//Delete should give prompt to remove account, add gives options to add
 		//edit should bring up the account details and allow them to be cchanged
