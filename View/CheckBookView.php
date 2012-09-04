@@ -11,7 +11,7 @@ class CheckBookView extends View{
 		echo '<div class ="CheckBookTabs">';
 		echo '<ul class = "CheckTabs">';
 		foreach ($accounts as $acct) {
-			echo '<li class="CheckTabs"><a class = "AccountTab" href= "../CheckBook.php/' . $acct .':Display">' . $acct . '</a></li>';
+			echo '<li class="CheckTabs"><a class = "AccountTab" href= "/BudgetBuddy/CheckBook.php/' . $acct .':Display">' . $acct . '</a></li>';
 		}
 		echo '</ul>';
 		echo '</div>';

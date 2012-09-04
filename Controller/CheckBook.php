@@ -42,8 +42,9 @@ class CheckBook{
 		return !$this->db->checkAvailableName($user);
 	}
 
+
 	private function transactionArea(){
-		echo '<div class = "TransactionArea" id ="Scrollage">';
+		echo '<div class = "TransactionArea" id ="Scrollable">';
 		switch($this->actionToTake){
 			case 'Display':
 				//If there are no accounts:
@@ -55,11 +56,16 @@ class CheckBook{
 					$transactions = $this->db->getTransactionsForMonth($month,$this->userid,$this->accountToLoad);
 					//This seems like an awfully good place for a table, or at least something like it
 					echo '<table class ="Transaction">';
-					echo '<tr><th>ID</th><th>Date</th><th>Name</th><th>Amount</th></tr>';
+					echo '<tr><th class = "Transaction">ID</th><th class = "Transaction">Date</th><th class = "Transaction">Name</th><th class = "Transaction">Amount</th></tr>';
 					foreach ($transactions as $transaction) {
 						echo '<tr>';
 						foreach ($transaction as $key => $value) {
-							var_dump( $transaction[$key] );
+							//We do want to format things correctly:
+							if(strtolower($key) == 'date'){
+								echo '<td class = "Transaction">' . View::getJustDate($transaction[$key]) . '</td>';
+							}else{
+								echo '<td class = "Transaction">' .  $transaction[$key] . '</td>';
+							}
 						}
 						echo '</tr>';
 					}
@@ -89,6 +95,10 @@ class CheckBook{
 
 		echo '</div>';
 		//Render the Menu Items
+		echo '<div class = "largespacer"></div>';
+		echo '<div class = "largespacer"></div>';
+		echo '<div class = "largespacer"></div>';
+		echo '<div class = "largespacer"></div>';
 		$view->displayMenus($this->links);
 		$view->logout();
 	}

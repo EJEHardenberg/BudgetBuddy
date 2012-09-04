@@ -19,7 +19,7 @@ class View {
 
 	}
 
-	function getJustDate($date){
+	static function getJustDate($date){
 		//"2012-08-30 18:47:37" -> 08/30/12
 		$midway = explode(' ',$date);
 		$dString = explode('-',$midway[0]);

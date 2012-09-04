@@ -8,7 +8,7 @@ div.Background{
 	background-color: #262335;
 	font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
 	font-size:12px;
-	width: 200px;
+	width: 400px;
 	min-width: 200px;
 	min-height: 400px;
 	margin-left: auto;
@@ -103,8 +103,8 @@ div.largespacer{
 /*Menu Styling */
 div.Menus{
 	background-color: #383553;
-	width: 200px;
-	min-width: 200px;
+	width: 400px;
+	min-width: 400;
 	min-height: 80px;
 	margin-right: auto;
 	margin-left: auto;
@@ -273,4 +273,28 @@ span.Info{
 	color: #000000;
 	display: block;
 	text-align: left;
+}
+table.Transaction{
+	font-size: 11px;
+	color: #2F2D3E;
+	border: solid 1px #8393a7;
+	width: auto;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	text-align: center;
+	display: block;
+}
+th.Transaction{
+	border: solid 1px #8393a7;
+	border-top: none;
+	padding: 4px;
+	margin: 2px;
+}
+td.Transaction{
+	padding: 0;
+	margin: 0;
+	border: solid 1px #8393a7;
+	border-top: none;
+
 }
