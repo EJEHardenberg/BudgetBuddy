@@ -54,19 +54,33 @@ class CheckBook{
 					$month = date('Y-m-t 23:59:59');
 					//I wonder if this would break if the accountTOLoad was null.
 					$transactions = $this->db->getTransactionsForMonth($month,$this->userid,$this->accountToLoad);
+					//ADD BUTTON HERE
+					
+
 					//This seems like an awfully good place for a table, or at least something like it
 					echo '<table class ="Transaction">';
-					echo '<tr><th class = "Transaction">ID</th><th class = "Transaction">Date</th><th class = "Transaction">Name</th><th class = "Transaction">Amount</th></tr>';
+					echo '<tr><th class = "Transaction">ID</th><th class = "Transaction">Date</th><th class = "Transaction">Name</th><th class = "Transaction">Amount</th>';
+					echo '<th></th><th></th></tr>';
 					foreach ($transactions as $transaction) {
 						echo '<tr>';
 						foreach ($transaction as $key => $value) {
 							//We do want to format things correctly:
-							if(strtolower($key) == 'date'){
-								echo '<td class = "Transaction">' . View::getJustDate($transaction[$key]) . '</td>';
-							}else{
-								echo '<td class = "Transaction">' .  $transaction[$key] . '</td>';
+							switch(strtolower($key)){
+								case 'date':
+									echo '<td class = "Transaction">' . View::getJustDate($transaction[$key]) . '</td>';
+									break;
+								case 'id':
+									echo '<td class = "Transaction">' .  str_pad($transaction[$key],5,"0",STR_PAD_LEFT) . '</td>'; 
+									break;
+								default:
+									echo '<td class = "Transaction">' .  $transaction[$key] . '</td>';
+									break;
 							}
 						}
+						//Put out the Edit and Delete button
+						echo '<td class = "Transaction"><a class = "Transaction" href="/BudgetBuddy/CheckBook.php/Edit:' . $transaction['id'] .  '">Edit</a></td>';
+						echo '<td class = "Transaction"><a class = "Transaction" href="/BudgetBuddy/CheckBook.php/Delete:' . $transaction['id'] . '">Delete</a></td>';
+						//We could add a move transaction here to move one transaction from one account to anothet
 						echo '</tr>';
 					}
 					echo '</table>';

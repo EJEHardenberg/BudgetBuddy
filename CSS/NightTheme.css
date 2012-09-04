@@ -290,11 +290,32 @@ th.Transaction{
 	border-top: none;
 	padding: 4px;
 	margin: 2px;
+	min-width: 30px;
 }
 td.Transaction{
-	padding: 0;
+	padding: 2px;
 	margin: 0;
 	border: solid 1px #8393a7;
 	border-top: none;
 
+}
+a.Transaction:link{
+	color: #000000;
+	text-decoration: none;
+	padding: 5px;
+}
+a.Transaction:visited{
+	color: #000000;
+	text-decoration: none;
+	padding: 5px;
+}
+a.Transaction:active{
+	color: #000000;
+	text-decoration: none;
+	padding: 5px;
+}
+a.Transaction:hover{
+	color: #BBA481;
+	background-color: #8F93a7;
+	text-decoration: underline;
 }
