@@ -174,7 +174,38 @@ class CheckBook{
 					}
 				}
 				break;
+			case 'Edit':
+				if(!isset($this->accountToLoad)){
+					echo 'No account to Edit!<br /> Redirecting...';
+					echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php" />'; 
+				}
+				//If theres an account to load than we should grab its data, populate the fields and pretty much do the same thing as add edit but with a different function
+				$info = $this->db->getAccountByName($this->accountToLoad,$this->userid);
+				echo '<div class ="largespacer"></div>';
+				echo '<form id="Login" name="login" method="post" action="/BudgetBuddy/CheckBook.php/:EditAccount">';
+				
+					echo '<label class="Login">Account Name<br />';
+					echo '</label>';
+					echo '<input type="text" name="name" id="name"  class="rounded" value = "'. $info["name"] .'"/>';
+					echo '<br />';
+					echo  '<div class="largespacer"></div>';
 
+					echo '<label class="Login">New Amount<br />';
+					echo '</label>';
+					echo '<input type="text" name="amount" id="amount" class="rounded" value = "'. $info["amount"].'"/>';
+
+					echo '<div class="largespacer"></div>';
+						echo '<button type="submit" class ="trans" name="confirm" value = "yes" >Submit</button>';
+						echo '<button type="submit" class ="trans" name="confirm" value = "no" >Back</button>';
+					echo '<div class="largespacer"></div>'; 	
+				
+				echo '</form>';				
+				break;
+			case 'EditAccount':
+				//Actually edit and then redirect
+
+
+				break;
 		}
 		echo '</div>';
 	}

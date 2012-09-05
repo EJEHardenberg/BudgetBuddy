@@ -214,6 +214,25 @@ class Database{
 		return $addCom->execute();
 	}
 
+	public function getAccountByName($accountName,$userid){
+		$getAcc = $this->link->prepare('SELECT name,amount FROM accounts WHERE userid = ? AND name = ?');
+		$getAcc->bindValue(1,$userid,PDO::PARAM_STR);
+		$getAcc->bindValue(2,$accountName,PDO::PARAM_STR);
+		$getAcc->execute();
+
+		$result =  $getAcc->fetchall(PDO::FETCH_ASSOC);
+		return $result[0];
+
+	}
+
+	public function setAccountInfo($accountName,$amount,$userid){
+		//This function will set the account to the info passed in.
+	}
+
+	public function updateAccount($accountName,$amountToAdd,$userid,$sub=false){
+		//This will add or subtract a transaction from an account
+	}
+
 }
 
 ?>
