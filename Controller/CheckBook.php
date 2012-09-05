@@ -46,6 +46,7 @@ class CheckBook{
 	private function transactionArea(){
 		echo '<div class = "TransactionArea" id ="Scrollable">';
 		switch($this->actionToTake){
+			//Displays all transactions for an account
 			case 'Display':
 				//If there are no accounts:
 				if(is_null($this->accountToLoad)){
@@ -55,7 +56,18 @@ class CheckBook{
 					//I wonder if this would break if the accountTOLoad was null.
 					$transactions = $this->db->getTransactionsForMonth($month,$this->userid,$this->accountToLoad);
 					//ADD BUTTON HERE
+					echo '<h5 id="DropDownH5" onmouseout="DropDownColorChange(); " onmouseover="DropDownColorChange();"  onclick="dropClicked(); ">+ Add Transaction </h5><br />';
+					echo '<form action = "/BudgetBuddy/CheckBook.php/'. $this->accountToLoad .':AddTransaction" method="post">';
+					echo '<ul id="DropDownUL" >';
+						echo '<li id="DropDownLI"> Name: <input = "text" class ="trans" name="name" /> </li>';
+						echo '<li id="DropDownLI"> Amount: <input = "text" class ="trans" name="amt" /></li>';
+						echo '<li id="DropDownLI"> Date: <input = "text" class ="trans" name="dte" value = "'. date('Y-m-d') .'"/> </li>';
+						echo '<li id="DropDownLI"> <button type="submit" class = "trans"> Add Transaction </button> </li>';
+					echo '</ul>';
 					
+					echo '</form>';
+
+					echo '<div class ="largespacer"></div>';
 
 					//This seems like an awfully good place for a table, or at least something like it
 					echo '<table class ="Transaction">';
@@ -78,8 +90,8 @@ class CheckBook{
 							}
 						}
 						//Put out the Edit and Delete button
-						echo '<td class = "Transaction"><a class = "Transaction" href="/BudgetBuddy/CheckBook.php/Edit:' . $transaction['id'] .  '">Edit</a></td>';
-						echo '<td class = "Transaction"><a class = "Transaction" href="/BudgetBuddy/CheckBook.php/Delete:' . $transaction['id'] . '">Delete</a></td>';
+						echo '<td class = "Transaction"><a class = "Transaction" href="/BudgetBuddy/CheckBook.php/Transaction:Edit:' . $transaction['id'] .  '">Edit</a></td>';
+						echo '<td class = "Transaction"><a class = "Transaction" href="/BudgetBuddy/CheckBook.php/Transaction:Delete:' . $transaction['id'] . '">Delete</a></td>';
 						//We could add a move transaction here to move one transaction from one account to anothet
 						echo '</tr>';
 					}
@@ -87,6 +99,36 @@ class CheckBook{
 
 				}
 				break;
+			//Add is for adding an account only
+			case 'Add':
+
+				break;
+			//For Deleting an account:
+			case 'Delete':
+				if(is_null($this->accountToLoad)){
+					echo '<span class = "Info">You can\'t delete an account that doesn\'t exist!</span>';
+				}else{
+					//Oh hey an account exists? Better make sure of that
+					//Put out a comfirmation screen:
+					echo '<div class ="largespacer"></div>';
+					echo '<form action = "/BudgetBuddy/CheckBook.php/' . $this->accountToLoad . ':DeleteYes" method="post"> ';
+						echo 'Deleting the account ' . $this->accountToLoad . ' is permanent and you will lose all transactions on this account, are you sure?';
+						echo '<div class ="largespacer"></div>';
+						echo '<button type = "submit" name="confim" value = "yes">Delete This Account</button>';
+						echo '<div class ="largespacer"></div>';
+						echo '<button type = "submit" name="confim" value = "no">Don\'t Delete This Account</button>';
+					echo '</form>';
+					echo '<div class ="largespacer"></div>';
+				}
+				break;
+			case 'DeleteYes':
+					if($_POST['confirm'] == 'yes'){
+
+					}else{
+
+					}
+				break;
+
 		}
 		echo '</div>';
 	}

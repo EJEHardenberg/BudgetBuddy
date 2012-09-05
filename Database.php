@@ -198,6 +198,10 @@ class Database{
 		return $log->fetchall(PDO::FETCH_ASSOC);
 	}
 
+	public function deleteAccount($accountName,$userid){
+		//This function does exactly what it says it does
+	}
+
 
 }
 

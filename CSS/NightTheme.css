@@ -295,27 +295,78 @@ th.Transaction{
 td.Transaction{
 	padding: 2px;
 	margin: 0;
-	border: solid 1px #8393a7;
+	border: solid 2px #8393a7;
 	border-top: none;
 
 }
 a.Transaction:link{
 	color: #000000;
 	text-decoration: none;
-	padding: 5px;
+	padding-left: 3px;
+	padding-right: 3px;
+	background-color: #8B87F9;
+	border: solid 1px black;
 }
 a.Transaction:visited{
 	color: #000000;
 	text-decoration: none;
-	padding: 5px;
+	border: solid 1px black;
 }
 a.Transaction:active{
 	color: #000000;
 	text-decoration: none;
-	padding: 5px;
+	border: solid 1px black;
 }
 a.Transaction:hover{
 	color: #BBA481;
-	background-color: #8F93a7;
+	background-color: #8F93D9;
 	text-decoration: underline;
+}
+#DropDownH5{
+	float: left;
+	padding: 0;
+	margin: 0;
+}
+#DropDownUL{
+	display: none;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	text-decoration: none;
+	font-size: 11px;
+}
+#DropDownLI{
+	display: inline;
+	margin: 0;
+	padding-left: 8px;
+	padding-right: 4px;
+	float: left;
+	text-align: center;
+	text-decoration: none;
+	font-size: 11px;
+}
+input.trans{
+	text-align: center;
+	width: 65px;
+	text-decoration: none;
+	font-size: 11px;
+	-moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: 2px 2px 3px #666;
+    -webkit-box-shadow: 2px 2px 3px #666;
+    box-shadow: 2px 2px 3px #666;
+}
+button.trans{
+	text-align: center;
+	text-decoration: none;
+	width: 100px;
+	font-size: 11px;
+	-moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: 2px 2px 3px #666;
+    -webkit-box-shadow: 2px 2px 3px #666;
+    box-shadow: 2px 2px 3px #666;	
 }
