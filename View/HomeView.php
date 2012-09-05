@@ -48,7 +48,7 @@ class HomeView extends View{
 
 	function createAccountButton(){
 		//Displayed if there are no accounts
-		echo '<form name="accounts" method="post" action="Login.php">';
+		echo '<form name="accounts" method="post" action="/BudgetBuddy/CheckBook.php/:Add">';
 		echo '<button type="submit">Add an Account</button>';
 		echo '</form>';
 	}

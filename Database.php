@@ -200,8 +200,19 @@ class Database{
 
 	public function deleteAccount($accountName,$userid){
 		//This function does exactly what it says it does
+		$delCom = $this->link->prepare('DELETE FROM accounts WHERE userid = ? AND name = ?');
+		$delCom->bindValue(1,$userid,PDO::PARAM_STR);
+		$delCom->bindValue(2,$accountName,PDO::PARAM_STR);
+		return $delCom->execute();
 	}
 
+	public function addAccount($accountName, $initialAmount,$userid){
+		$addCom = $this->link->prepare('INSERT INTO accounts (userid,name,amount) VALUES (?,?,?);')	;
+		$addCom->bindValue(1,$userid,PDO::PARAM_INT);
+		$addCom->bindValue(2,$accountName, PDO::PARAM_STR);
+		$addCom->bindValue(3,$initialAmount,PDO::PARAM_STR);//such crap that pdo doesnt have decimal
+		return $addCom->execute();
+	}
 
 }
 

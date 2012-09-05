@@ -101,8 +101,44 @@ class CheckBook{
 				break;
 			//Add is for adding an account only
 			case 'Add':
+				//Maybe I'll ask josh about validating input before submitting for the number stuff
+				echo '<div class ="largespacer"></div>';
+				echo '<form id="Login" name="login" method="post" action="/BudgetBuddy/CheckBook.php/:AddAccount">';
+				
+					echo '<label class="Login">Account Name<br />';
+					echo '</label>';
+					echo '<input type="text" name="name" id="name"  class="rounded"/>';
+					echo '<br />';
+					echo  '<div class="largespacer"></div>';
+
+					echo '<label class="Login">Initial Amount<br />';
+					echo '</label>';
+					echo '<input type="text" name="amount" id="amount" class="rounded"/>';
+
+					echo '<div class="largespacer"></div>';
+						echo '<button type="submit" class ="trans" name="confirm" value = "yes" >Submit</button>';
+						echo '<button type="submit" class ="trans" name="confirm" value = "no" >Back</button>';
+					echo '<div class="largespacer"></div>'; 	
+				
+				echo '</form>';
 
 				break;
+			case 'AddAccount':
+					if(!is_null($_POST['confirm'])){
+						$success = $this->db->AddAccount($_POST['name'],$_POST['amount'],$this->userid);
+						if($success){
+							echo 'Account Successfully Created!<br />';
+							echo 'Redirecting you to your new account...';
+							echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php/' . $_POST['name'] .':Display" />'; 
+						}else{
+							echo 'Sorry we couldn\'t create your account right now!<br />';
+							echo 'Redirecting you to the main page';
+							echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php" />'; 
+						}
+					}else{
+						echo 'Sorry, we couldn\'t create the account for some reason';
+					}
+					break;
 			//For Deleting an account:
 			case 'Delete':
 				if(is_null($this->accountToLoad)){
@@ -114,19 +150,29 @@ class CheckBook{
 					echo '<form action = "/BudgetBuddy/CheckBook.php/' . $this->accountToLoad . ':DeleteYes" method="post"> ';
 						echo 'Deleting the account ' . $this->accountToLoad . ' is permanent and you will lose all transactions on this account, are you sure?';
 						echo '<div class ="largespacer"></div>';
-						echo '<button type = "submit" name="confim" value = "yes">Delete This Account</button>';
+						echo '<button type = "submit" name="confirm" value = "yes">Delete This Account</button>';
 						echo '<div class ="largespacer"></div>';
-						echo '<button type = "submit" name="confim" value = "no">Don\'t Delete This Account</button>';
+						echo '<button type = "submit" name="confirm" value = "no">Don\'t Delete This Account</button>';
 					echo '</form>';
 					echo '<div class ="largespacer"></div>';
 				}
 				break;
 			case 'DeleteYes':
+				if(isset($_POST['confirm'])){
 					if($_POST['confirm'] == 'yes'){
-
+						$success = $this->db->deleteAccount($this->accountToLoad,$this->userid);
+						if($success){
+							echo 'Account Successfully Deleted.';
+							//Redirect:
+							echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php" />'; 
+						}else{
+							echo 'There was a problem deleting the account. Please try again';
+							echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php" />'; 
+						}
 					}else{
-
+						echo '<meta http-equiv="REFRESH" content="0; url=/BudgetBuddy/CheckBook.php/'.$this->accountToLoad .':Display" />'; 
 					}
+				}
 				break;
 
 		}
