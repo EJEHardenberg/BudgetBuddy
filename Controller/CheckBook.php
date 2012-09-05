@@ -182,7 +182,7 @@ class CheckBook{
 				//If theres an account to load than we should grab its data, populate the fields and pretty much do the same thing as add edit but with a different function
 				$info = $this->db->getAccountByName($this->accountToLoad,$this->userid);
 				echo '<div class ="largespacer"></div>';
-				echo '<form id="Login" name="login" method="post" action="/BudgetBuddy/CheckBook.php/:EditAccount">';
+				echo '<form id="Login" name="login" method="post" action="/BudgetBuddy/CheckBook.php/' .$this->accountToLoad.':EditAccount">';
 				
 					echo '<label class="Login">Account Name<br />';
 					echo '</label>';
@@ -203,6 +203,19 @@ class CheckBook{
 				break;
 			case 'EditAccount':
 				//Actually edit and then redirect
+				if(!isset($this->accountToLoad) || !isset($_POST['name'])){
+					echo 'Something has gone terribly wrong! Byebye.';
+					echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php" />'; 					
+				}
+
+				//Post the new values to the database
+				if($this->db->setAccountInfo($_POST['name'],$_POST['amount'],$this->userid,$this->accountToLoad)){
+					echo 'Account Successfully Edited. Redirecting...';
+					echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php/' . $this->accountToLoad .':Display" />'; 
+				}else{
+					echo 'An error occured, redirecting...';
+					echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php" />'; 					
+				}
 
 
 				break;

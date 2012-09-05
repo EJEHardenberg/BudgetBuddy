@@ -225,8 +225,14 @@ class Database{
 
 	}
 
-	public function setAccountInfo($accountName,$amount,$userid){
+	public function setAccountInfo($accountName,$amount,$userid,$oldName){
 		//This function will set the account to the info passed in.
+		$setAcc = $this->link->prepare('UPDATE accounts SET name = ?, amount = ? WHERE userid = ? AND name = ?;');
+		$setAcc->bindValue(1,$accountName,PDO::PARAM_STR);
+		$setAcc->bindValue(2,$amount,PDO::PARAM_STR);
+		$setAcc->bindValue(3,$userid,PDO::PARAM_STR);
+		$setAcc->bindValue(4,$oldName,PDO::PARAM_STR);
+		return $setAcc->execute();
 	}
 
 	public function updateAccount($accountName,$amountToAdd,$userid,$sub=false){
