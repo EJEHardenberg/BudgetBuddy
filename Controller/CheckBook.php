@@ -36,7 +36,6 @@ class CheckBook{
 		$this->actionToTake = $url[1];
 		//Transaction stuff
 		if(isset($url[2])){
-			var_dump('there it is');
 			$this->transID = $url[2];
 		}
 	}
@@ -275,8 +274,48 @@ class CheckBook{
 					else{
 						echo 'There was an issue deleting the transaction<br />Redirecting...';
 					}
+					$this->transID = null;
 					echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php/' . $this->accountToLoad .':Display" />';
 				}//If not then what are we deleting seriously?
+				break;
+			case 'EditTransaction':
+				//Pretty form to edit the transaction
+				if(!is_null($this->transID)){ 
+					$info = $this->db->getTransactionInfo($this->transID);
+					echo '<div class ="largespacer"></div>';
+					echo '<form id="Login" name="login" method="post" action="/BudgetBuddy/CheckBook.php/' .$this->accountToLoad.':DOEditAccount:'. $this->transID .'">';
+					
+						echo '<label class="Login">Transaction Description<br />';
+						echo '</label>';
+						echo '<input type="text" name="name" id="name"  class="rounded" value = "'. $info["name"] .'"/>';
+						echo '<br />';
+						echo  '<div class="largespacer"></div>';
+
+						echo '<label class="Login">New Amount<br />';
+						echo '</label>';
+						echo '<input type="text" name="amount" id="amount" class="rounded" value = "'. $info["amount"].'"/>';
+
+						echo '<label class="Login">Date<br />';
+						echo '</label>';
+						echo '<input type="text" name="amount" id="amount" class="rounded" value = "'. View::getJustDate($info["date"]).'"/>';
+
+						echo '<div class="largespacer"></div>';
+							echo '<button type="submit" class ="trans" name="confirm" value = "yes" >Submit</button>';
+							echo '<button type="submit" class ="trans" name="confirm" value = "no" >Back</button>';
+						echo '<div class="largespacer"></div>'; 	
+					
+					echo '</form>';	
+				}
+				break;
+			case 'DOEditTransaction':
+				if($POST_['confirm'] == "yes"){ 
+					if(!is_null($this->transID)){
+						$success = $this->db->EditTransaction($this->transID,$this->accountToLoad,$this->userid,$_POST);
+						echo $success ? ' Transaction Edited Successfully' : 'Error Editing Transaction';
+						//echo '<br />Returning to Acccount...<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php/' . $this->accountToLoad .':Display" />';
+
+					}//IF we have no id then none of this matters so break
+				}
 				break;
 		}
 		echo '</div>';

@@ -292,16 +292,12 @@ class Database{
 	//Sadly we can't use this above because of the lack of id up there.
 	public function deleteTransaction($id,$account,$userid){
 		//Get how much we have to modify the account by first
-		var_dump($id);
-		var_dump($userid);
-		var_dump($account);
 		$get = $this->link->prepare('SELECT * FROM  transactions WHERE id = ?');
-		$get->bindValue(1,$id);
+		$get->bindValue(1,$id,PDO::PARAM_INT);
 		$get->execute();
 
 		$results = $get->fetchall(PDO::FETCH_ASSOC);
 		$trans = $results[0];
-		var_dump($trans);
 		$tAmount = $trans['amount'];
 
 		$old = $this->link->prepare('SELECT amount FROM accounts WHERE userid = ? AND name = ?;');
@@ -317,9 +313,6 @@ class Database{
 		//I don't think I need to check the sign. if its + then that means it was a subtraction to the original account so I have to add it in
 		//and if it was a - then it added to the account but adding a - will still subtract from the account so yay
 		$new = strval($oldAmount) + strval($tAmount);
-		var_dump($oldAmount);
-		var_dump($new);
-		var_dump($tAmount);
 		
 		$modAccount = $this->link->prepare('UPDATE accounts SET amount = ? WHERE name = ? AND userid = ?');
 		$modAccount->bindValue(1,$new,PDO::PARAM_STR);
@@ -332,6 +325,25 @@ class Database{
 		$del = $this->link->prepare('DELETE FROM transactions WHERE id = ?;');
 		$del->bindValue(1,$id);
 		return $del->execute();
+	}
+
+	public function getTransactionInfo($id){
+		//gets an info array with name,amount,and date
+		$getT = $this->link->prepare('SELECT * FROM transactions WHERE id = ?');
+		$getT->bindValue(1,$id,PDO::PARAM_INT);
+		$getT->execute();
+
+		$results = $get->fetchall(PDO::FETCH_ASSOC);
+		$transaction = $results[0];//Always unique so only one
+
+		return $transaction;
+
+	}
+
+	public function editTransaction($id,$account,$userid,$newData){
+		$transaction = $this->getTransactionInfo($id);
+
+
 	}
 
 
