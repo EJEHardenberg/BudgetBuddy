@@ -95,8 +95,8 @@ class CheckBook{
 							}
 						}
 						//Put out the Edit and Delete button
-						echo '<td class = "Transaction"><a class = "Transaction" href="/BudgetBuddy/CheckBook.php/Transaction:Edit:' . $transaction['id'] .  '">Edit</a></td>';
-						echo '<td class = "Transaction"><a class = "Transaction" href="/BudgetBuddy/CheckBook.php/Transaction:Delete:' . $transaction['id'] . '">Delete</a></td>';
+						echo '<td class = "Transaction"><a class = "Transaction" href="/BudgetBuddy/CheckBook.php/Transaction:EditTransaction:' . $transaction['id'] .  '">Edit</a></td>';
+						echo '<td class = "Transaction"><a class = "Transaction" href="/BudgetBuddy/CheckBook.php/Transaction:DeleteTransaction:' . $transaction['id'] . '">Delete</a></td>';
 						//Empty for balance
 						echo '<td></td>';
 						//We could add a move transaction here to move one transaction from one account to anothet
@@ -261,13 +261,23 @@ class CheckBook{
 						echo 'There was a problem with your date field, please enter with the following form: yyyy-mm-dd with leading zeros.';
 					}
 				}else{
-					var_dump($_POST);
 					echo 'There was a problem with adding your transaction.';	 					
 				}
 				//Redirect
 				echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php/' . $this->accountToLoad .':Display" />';
 				break;
-
+			case 'DeleteTransaction':
+				if(!is_null($this->transID)){
+					$success = $this->db->deleteTransaction($this->transID,$this->accountToLoad,$this->userid);
+					if($success){
+						echo 'Transaction Successfully Deleted<br />Redirecting...';
+					}
+					else{
+						echo 'There was an issue deleting the transaction<br />Redirecting...';
+					}
+					//echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php/' . $this->accountToLoad .':Display" />';
+				}//If not then what are we deleting seriously?
+				break;
 		}
 		echo '</div>';
 	}

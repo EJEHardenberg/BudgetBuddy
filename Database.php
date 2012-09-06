@@ -246,7 +246,7 @@ class Database{
 		$transAdd = $trans->execute();
 
 		//If we didn't add it then that sucks:
-		if(!transAdd){return false;}
+		if(!$transAdd){return false;}
 
 		//We won therefore we should update the account, and hopefully it exists, if it doesnt then we'll have to take out the transaction
 		$old = $this->link->prepare('SELECT amount FROM accounts WHERE userid = ? AND name = ?;');
@@ -287,8 +287,51 @@ class Database{
 
 		return $success;
 
+	}
 
+	//Sadly we can't use this above because of the lack of id up there.
+	public function deleteTransaction($id,$account,$userid){
+		//Get how much we have to modify the account by first
+		var_dump($id);
+		var_dump($userid);
+		var_dump($account);
+		$get = $this->link->prepare('SELECT * FROM  transactions WHERE id = ?');
+		$get->bindValue(1,$id);
+		$get->execute();
 
+		$results = $get->fetchall(PDO::FETCH_ASSOC);
+		$trans = $result[0];
+		var_dump($trans);
+		$tAmount = $trans['amount'];
+
+		$old = $this->link->prepare('SELECT amount FROM accounts WHERE userid = ? AND name = ?;');
+		$old->bindValue(1,$userid,PDO::PARAM_STR);
+		$old->bindValue(2,$account,PDO::PARAM_STR);
+		$old->execute();
+
+		//Get the old amount
+		$results = $old->fetchall(PDO::PARAM_STR);
+		$result = $results[0];
+		$oldAmount  = $result['amount'];
+
+		//I don't think I need to check the sign. if its + then that means it was a subtraction to the original account so I have to add it in
+		//and if it was a - then it added to the account but adding a - will still subtract from the account so yay
+		$new = strval($oldAmount) + strval($tAmount);
+		var_dump($oldAmount);
+		var_dump($new);
+		var_dump($tAmount);
+		
+		$modAccount = $this->link->prepare('UPDATE accounts SET amount = ? WHERE name = ? AND userid = ?');
+		$modAccount->bindValue(1,$new,PDO::PARAM_STR);
+		$modAccount->bindValue(2,$trans['accountname'],PDO::PARAM_STR);
+		$modAccount->bindValue(3,$userid,PDO::PARAM_STR);
+		$success =  $modAccount->execute();
+
+		if(!$success){return false;}
+
+		$del = $this->link->prepare('DELETE FROM transactions WHERE id = ?;');
+		$del->bindValue(1,$id);
+		return $del->execute();
 	}
 
 
