@@ -26,6 +26,11 @@ class View {
 		return $dString[1] . '/' . $dString[2] . '/' . substr($dString[0],-2);
 	}
 
+	static function convertPHPDate($date){
+		//yyyy-mm-dd -> yyyy-mm-dd oo:00:00
+		return $date . ' 00:00:00'; //So difficult.
+	}
+
 	function displayMenus($links){
 		//Home page links to settings, checkbook and reports
 		echo '<div class = "Menus">';

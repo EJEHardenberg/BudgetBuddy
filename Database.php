@@ -235,9 +235,62 @@ class Database{
 		return $setAcc->execute();
 	}
 
-	public function updateAccount($accountName,$amountToAdd,$userid,$sub=false){
-		//This will add or subtract a transaction from an account
+	public function addTransaction($account, $userid, $amount, $sub, $name, $date){
+		//Attempt to add the transaction
+		$trans = $this->link->prepare('INSERT INTO transactions (userid,accountname,name,amount,date) VALUES (?,?,?,?,?);');
+		$trans->bindValue(1,$userid,PDO::PARAM_INT);
+		$trans->bindValue(2,$account,PDO::PARAM_STR);
+		$trans->bindValue(3,$name,PDO::PARAM_STR);
+		$trans->bindValue(4,$amount,PDO::PARAM_STR);
+		$trans->bindValue(5,View::convertPHPDate($date),PDO::PARAM_STR);
+		$transAdd = $trans->execute();
+
+		//If we didn't add it then that sucks:
+		if(!transAdd){return false;}
+
+		//We won therefore we should update the account, and hopefully it exists, if it doesnt then we'll have to take out the transaction
+		$old = $this->link->prepare('SELECT amount FROM accounts WHERE userid = ? AND name = ?;');
+		$old->bindValue(1,$userid,PDO::PARAM_STR);
+		$old->bindValue(2,$account,PDO::PARAM_STR);
+		$old->execute();
+
+		//Get the old amount
+		$results = $old->fetchall(PDO::PARAM_STR);
+		$result = $results[0];
+		$oldAmount  = $result['amount'];
+
+		//apply the new transaction to the old amount
+		if($sub){
+			$amount = strval($oldAmount) + strval($amount)*-1;	
+		}else{
+			$amount = strval($oldAmount) - strval($amount);	
+		}
+		
+
+		//Update the account
+		$acct = $this->link->prepare('UPDATE accounts SET amount = ? WHERE name = ? AND userid = ?');
+		$acct->bindValue(1,$amount,PDO::PARAM_STR);
+		$acct->bindValue(2,$account,PDO::PARAM_STR);
+		$acct->bindValue(3,$userid,PDO::PARAM_STR);
+		$success =  $acct->execute();
+
+		if(!$success){
+			//Damnit. Now we get rid of the transaction
+			$remove = $this->link->prepare('DELETE FROM transactions WHERE userid = ? AND name = ? AND accountname = ? AND date = ? AND amount = ?');
+			$remove->bindValue(1,$userid,PDO::PARAM_STR);
+			$remove->bindValue(2,$name,PDO::PARAM_STR);
+			$remove->bindValue(3,$account,PDO::PARAM_STR);
+			$remove->bindValue(4,$date,PDO::PARAM_STR);
+			$remove->bindValue(5,$amount,PDO::PARAM_STR);
+			$remove->execute();
+		}
+
+		return $success;
+
+
+
 	}
+
 
 }
 

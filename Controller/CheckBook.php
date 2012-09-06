@@ -34,6 +34,11 @@ class CheckBook{
 		$url  = explode(':',end(explode('/', $_SERVER['REQUEST_URI']))) ;
 		$this->accountToLoad = $url[0];
 		$this->actionToTake = $url[1];
+		//Transaction stuff
+		if(isset($url[2])){
+			var_dump('there it is');
+			$this->transID = $url[2];
+		}
 	}
 
 	public function valid($user){
@@ -59,8 +64,8 @@ class CheckBook{
 					echo '<h5 id="DropDownH5" onmouseout="DropDownColorChange(); " onmouseover="DropDownColorChange();"  onclick="dropClicked(); ">+ Add Transaction </h5><br />';
 					echo '<form action = "/BudgetBuddy/CheckBook.php/'. $this->accountToLoad .':AddTransaction" method="post">';
 					echo '<ul id="DropDownUL" >';
-						echo '<li id="DropDownLI"> Name: <input = "text" class ="trans" name="name" /> </li>';
-						echo '<li id="DropDownLI"> Amount: <input = "text" class ="trans" name="amt" /></li>';
+						echo '<li id="DropDownLI"> Name: <input = "text" class ="trans" name="name" value = ""/> </li>';
+						echo '<li id="DropDownLI"> Amount: <input = "text" class ="trans" name="amt" value = ""/></li>';
 						echo '<li id="DropDownLI"> Date: <input = "text" class ="trans" name="dte" value = "'. date('Y-m-d') .'"/> </li>';
 						echo '<li id="DropDownLI"> <button type="submit" class = "trans"> Add Transaction </button> </li>';
 					echo '</ul>';
@@ -71,7 +76,7 @@ class CheckBook{
 
 					//This seems like an awfully good place for a table, or at least something like it
 					echo '<table class ="Transaction">';
-					echo '<tr><th class = "Transaction">ID</th><th class = "Transaction">Date</th><th class = "Transaction">Name</th><th class = "Transaction">Amount</th>';
+					echo '<tr><th class = "Transaction">ID</th><th class = "Transaction">Date</th><th class = "Transaction">Name</th><th class = "Transaction">Amount</th><th></th><th></th><th class = "Transaction">Account Balance</th>';
 					echo '<th></th><th></th></tr>';
 					foreach ($transactions as $transaction) {
 						echo '<tr>';
@@ -92,10 +97,19 @@ class CheckBook{
 						//Put out the Edit and Delete button
 						echo '<td class = "Transaction"><a class = "Transaction" href="/BudgetBuddy/CheckBook.php/Transaction:Edit:' . $transaction['id'] .  '">Edit</a></td>';
 						echo '<td class = "Transaction"><a class = "Transaction" href="/BudgetBuddy/CheckBook.php/Transaction:Delete:' . $transaction['id'] . '">Delete</a></td>';
+						//Empty for balance
+						echo '<td></td>';
 						//We could add a move transaction here to move one transaction from one account to anothet
 						echo '</tr>';
 					}
+					echo '<tr><td></td><td></td><td></td><td></td><td></td><td></td>';
+						echo '<td class = "Transaction">';
+						$act = $this->db->getAccountByName($this->accountToLoad,$this->userid);
+						echo $act['name'] . ': $' . $act['amount'];
+						echo '</td>';
 					echo '</table>';
+					//And now include the total amount in the Account:
+					
 
 				}
 				break;
@@ -203,22 +217,57 @@ class CheckBook{
 				break;
 			case 'EditAccount':
 				//Actually edit and then redirect
-				if(!isset($this->accountToLoad) || !isset($_POST['name'])){
-					echo 'Something has gone terribly wrong! Byebye.';
-					echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php" />'; 					
-				}
+				if($_POST['confirm'] == "yes"){
 
-				//Post the new values to the database
-				if($this->db->setAccountInfo($_POST['name'],$_POST['amount'],$this->userid,$this->accountToLoad)){
-					echo 'Account Successfully Edited. Redirecting...';
-					echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php/' . $this->accountToLoad .':Display" />'; 
+					if(!isset($this->accountToLoad) || !isset($_POST['name'])){
+						echo 'Something has gone terribly wrong! Byebye.';
+						echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php" />'; 					
+					}
+
+					//Post the new values to the database
+					if($this->db->setAccountInfo($_POST['name'],$_POST['amount'],$this->userid,$this->accountToLoad)){
+						echo 'Account Successfully Edited. Redirecting...';
+						echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php/' . $this->accountToLoad .':Display" />'; 
+					}else{
+						echo 'An error occured, redirecting...';
+						echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php" />'; 					
+					}
+
 				}else{
-					echo 'An error occured, redirecting...';
-					echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php" />'; 					
+					echo '<meta http-equiv="REFRESH" content="0; url=/BudgetBuddy/CheckBook.php/'.$accountToLoad.':Display" />'; 										
 				}
-
-
 				break;
+			case 'AddTransaction':
+				//Add transaction protocols
+				if(($_POST["dte"] != "") && $_POST["amt"] != "" && $_POST["name"] != ""){
+					//Validate the date somehow.
+					$valid = preg_match('/^\d{4}\-\d{2}\-\d{2}/', $_POST['dte']);
+					if($valid){
+						//Check the number field for amount should have xxxx.xx or something along those lines
+						$valid = preg_match('/\A[+-]?\d+(?:\.\d{0,2})?\z/', $_POST["amt"]);
+						if($valid){
+							//Now that all the numbers are valid (yay) actually add the transaction
+							$sub = preg_match('/\-/', $_POST["amt"]);
+							$success = $this->db->AddTransaction($this->accountToLoad,$this->userid,$_POST['amt'],$sub,$_POST["name"],$_POST['dte']);
+							if($success){
+								echo 'Transaction Successfully added.<br />Returning to Home Page';
+							}else{
+								echo 'There was a problem adding your transaction.<br /> Returning to Home Page';
+							}
+						}else{
+							echo 'There was a problem with the amount entered, please follow the format of numbers, decimal point, and only 2 digits of change';
+						}
+					}else{
+						echo 'There was a problem with your date field, please enter with the following form: yyyy-mm-dd with leading zeros.';
+					}
+				}else{
+					var_dump($_POST);
+					echo 'There was a problem with adding your transaction.';	 					
+				}
+				//Redirect
+				echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php/' . $this->accountToLoad .':Display" />';
+				break;
+
 		}
 		echo '</div>';
 	}
