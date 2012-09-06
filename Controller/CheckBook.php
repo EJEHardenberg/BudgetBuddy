@@ -275,7 +275,7 @@ class CheckBook{
 					else{
 						echo 'There was an issue deleting the transaction<br />Redirecting...';
 					}
-					//echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php/' . $this->accountToLoad .':Display" />';
+					echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php/' . $this->accountToLoad .':Display" />';
 				}//If not then what are we deleting seriously?
 				break;
 		}

@@ -300,13 +300,13 @@ class Database{
 		$get->execute();
 
 		$results = $get->fetchall(PDO::FETCH_ASSOC);
-		$trans = $result[0];
+		$trans = $results[0];
 		var_dump($trans);
 		$tAmount = $trans['amount'];
 
 		$old = $this->link->prepare('SELECT amount FROM accounts WHERE userid = ? AND name = ?;');
 		$old->bindValue(1,$userid,PDO::PARAM_STR);
-		$old->bindValue(2,$account,PDO::PARAM_STR);
+		$old->bindValue(2,$trans['accountname'],PDO::PARAM_STR);
 		$old->execute();
 
 		//Get the old amount
