@@ -220,7 +220,8 @@ class CheckBook{
 
 					if(!isset($this->accountToLoad) || !isset($_POST['name'])){
 						echo 'Something has gone terribly wrong! Byebye.';
-						echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php" />'; 					
+						echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php" />'; 	
+						break;				
 					}
 
 					//Post the new values to the database
@@ -263,10 +264,11 @@ class CheckBook{
 					echo 'There was a problem with adding your transaction.';	 					
 				}
 				//Redirect
-				echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php/' . $this->accountToLoad .':Display" />';
+				echo '<meta http-equiv="REFRESH" content="1; url=/BudgetBuddy/CheckBook.php/' . $this->accountToLoad .':Display" />';
 				break;
 			case 'DeleteTransaction':
 				if(!is_null($this->transID)){
+					$acct = $this->db->getTransactionInfo($this->transID);
 					$success = $this->db->deleteTransaction($this->transID,$this->accountToLoad,$this->userid);
 					if($success){
 						echo 'Transaction Successfully Deleted<br />Redirecting...';
@@ -275,12 +277,13 @@ class CheckBook{
 						echo 'There was an issue deleting the transaction<br />Redirecting...';
 					}
 					$this->transID = null;
-					echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php/' . $this->accountToLoad .':Display" />';
+					echo '<meta http-equiv="REFRESH" content="1; url=/BudgetBuddy/CheckBook.php/' . $acct['accountname'] .':Display" />';
 				}//If not then what are we deleting seriously?
 				break;
 			case 'EditTransaction':
 				//Pretty form to edit the transaction
 				if(!is_null($this->transID)){ 
+
 					$info = $this->db->getTransactionInfo($this->transID);
 					echo '<div class ="largespacer"></div>';
 					echo '<form id="Login" name="login" method="post" action="/BudgetBuddy/CheckBook.php/' .$this->accountToLoad.':DOEditTransaction:'. $this->transID .'">';
@@ -297,7 +300,7 @@ class CheckBook{
 
 						echo '<label class="Login">Date<br />';
 						echo '</label>';
-						echo '<input type="text" name="amount" id="amount" class="rounded" value = "'. View::convertSlashToHyph(View::getJustDate($info["date"])).'"/>';
+						echo '<input type="text" name="date" id="date" class="rounded" value = "'. (View::convertReverseDate(View::convertSlashToHyph(View::getJustDate(($info["date"]))))).'"/>';
 
 						echo '<div class="largespacer"></div>';
 							echo '<button type="submit" class ="trans" name="confirm" value = "yes" >Submit</button>';
@@ -310,9 +313,10 @@ class CheckBook{
 			case 'DOEditTransaction':
 				if($_POST['confirm'] == "yes"){ 
 					if(!is_null($this->transID)){
-						$success = $this->db->EditTransaction($this->transID,$this->accountToLoad,$this->userid,$_POST);
+						$acct = $this->db->getTransactionInfo($this->transID);
+						$success = $this->db->EditTransaction($this->transID,$acct['accountname'],$this->userid,$_POST);
 						echo $success ? ' Transaction Edited Successfully' : 'Error Editing Transaction';
-						//echo '<br />Returning to Acccount...<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php/' . $this->accountToLoad .':Display" />';
+						echo '<br />Returning to Acccount...<meta http-equiv="REFRESH" content="1; url=/BudgetBuddy/CheckBook.php/' . $acct['accountname'].':Display" />';
 
 					}//IF we have no id then none of this matters so break
 				}

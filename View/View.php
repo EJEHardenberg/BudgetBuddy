@@ -33,10 +33,15 @@ class View {
 
 	}
 
-
 	static function convertPHPDate($date){
 		//yyyy-mm-dd -> yyyy-mm-dd oo:00:00
 		return $date . ' 00:00:00'; //So difficult.
+	}
+
+	static function convertReverseDate($date){
+		//09-01-12 -> 2012-09-01
+		$temp = explode('-', $date);
+		return '20' . $temp[2] . '-' . $temp[0] . '-' . $temp[1];
 	}
 
 	function displayMenus($links){

@@ -188,7 +188,7 @@ class Database{
 	public function getTransactionsForMonth($month,$userid,$accountname){
 		//give this function (for month) the last day of the month. so for septemeber it be 2012-09-30 23:59:59
 		//select * from logins where logged_time betweeen date_sub(now(), interval 1 month) and now();
-		$log = $this->link->prepare('SELECT id,date,name,amount from transactions WHERE date between DATE_SUB(?, INTERVAL 1 MONTH) and ? AND userid = ? AND accountname = ? ORDER BY date DESC');
+		$log = $this->link->prepare('SELECT id,date,name,amount from transactions WHERE date between DATE_SUB(?, INTERVAL 1 MONTH) and ? AND userid = ? AND accountname = ? ORDER BY date DESC, id DESC');
 		$log->bindValue(1,$month,PDO::PARAM_STR);
 		$log->bindValue(2,$month,PDO::PARAM_STR);
 		$log->bindValue(3,$userid,PDO::PARAM_STR);
@@ -261,9 +261,9 @@ class Database{
 
 		//apply the new transaction to the old amount
 		if($sub){
-			$amount = strval($oldAmount) + strval($amount)*-1;	
+			$amount = strval($oldAmount) - abs(strval($amount));	
 		}else{
-			$amount = strval($oldAmount) - strval($amount);	
+			$amount = strval($oldAmount) + abs(strval($amount));	
 		}
 		
 
@@ -312,8 +312,8 @@ class Database{
 
 		//I don't think I need to check the sign. if its + then that means it was a subtraction to the original account so I have to add it in
 		//and if it was a - then it added to the account but adding a - will still subtract from the account so yay
-		$new = strval($oldAmount) + strval($tAmount);
-		
+		$new = strval($oldAmount) - strval($tAmount);
+
 		$modAccount = $this->link->prepare('UPDATE accounts SET amount = ? WHERE name = ? AND userid = ?');
 		$modAccount->bindValue(1,$new,PDO::PARAM_STR);
 		$modAccount->bindValue(2,$trans['accountname'],PDO::PARAM_STR);
@@ -344,18 +344,18 @@ class Database{
 		$transaction = $this->getTransactionInfo($id);
 		$oldAmount = $transaction['amount'];
 		$newAmount = $newData['amount'];
-		$mod = strval($newAmount) - strval($oldAmount);
+		$mod = strval($newAmount)-strval($oldAmount);
 
 		//Now I need the amount thats in the account
 		$acct = $this->link->prepare('SELECT amount FROM accounts WHERE name = ? AND userid = ?');
-		$acct->bindValue(1,$account,PDO::PARAM_STR);
-		$acct->bindValue(2,$userid.PDO::PARAM_INT);
+		$acct->bindValue(1,$transaction['accountname'],PDO::PARAM_STR);
+		$acct->bindValue(2,$userid,PDO::PARAM_INT);
 		$goodAccount = $acct->execute();
 
 		if(!$goodAccount){
 			return false;
 		}
-
+		
 		//update account
 		$result = $acct->fetch(PDO::FETCH_ASSOC);
 		$newBalance = strval($result['amount']) + $mod;
@@ -368,12 +368,12 @@ class Database{
 		if(!$valid){
 			return false;
 		}
-
+		
 		//update the transactions
-		$upTrans = $this->link->prepare("UPDATE accounts SET `amount`=?, SET `name`=?, SET `date`=? WHERE `id` = ? ;");
+		$upTrans = $this->link->prepare("UPDATE transactions SET amount=?, name=?, date = ? WHERE id = ? ;");
 		$upTrans->bindValue(1,$newData['amount'],PDO::PARAM_STR);
 		$upTrans->bindValue(2,$newData['name'],PDO::PARAM_STR);
-		$upTrans->bindValue(3,$newData['date'],PDO::PARAM_STR);
+		$upTrans->bindValue(3,View::convertPHPDate($newData['date']),PDO::PARAM_STR);
 		$upTrans->bindValue(4,$id,PDO::PARAM_INT);
 		$success = $upTrans->execute();
 
