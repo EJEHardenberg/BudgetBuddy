@@ -271,13 +271,13 @@ class Database{
 		$acct = $this->link->prepare('UPDATE accounts SET amount = ? WHERE name = ? AND userid = ?');
 		$acct->bindValue(1,$amount,PDO::PARAM_STR);
 		$acct->bindValue(2,$account,PDO::PARAM_STR);
-		$acct->bindValue(3,$userid,PDO::PARAM_STR);
+		$acct->bindValue(3,$userid,PDO::PARAM_INT);
 		$success =  $acct->execute();
 
 		if(!$success){
 			//Damnit. Now we get rid of the transaction
 			$remove = $this->link->prepare('DELETE FROM transactions WHERE userid = ? AND name = ? AND accountname = ? AND date = ? AND amount = ?');
-			$remove->bindValue(1,$userid,PDO::PARAM_STR);
+			$remove->bindValue(1,$userid,PDO::PARAM_INT);
 			$remove->bindValue(2,$name,PDO::PARAM_STR);
 			$remove->bindValue(3,$account,PDO::PARAM_STR);
 			$remove->bindValue(4,$date,PDO::PARAM_STR);
@@ -301,7 +301,7 @@ class Database{
 		$tAmount = $trans['amount'];
 
 		$old = $this->link->prepare('SELECT amount FROM accounts WHERE userid = ? AND name = ?;');
-		$old->bindValue(1,$userid,PDO::PARAM_STR);
+		$old->bindValue(1,$userid,PDO::PARAM_INT);
 		$old->bindValue(2,$trans['accountname'],PDO::PARAM_STR);
 		$old->execute();
 
@@ -317,7 +317,7 @@ class Database{
 		$modAccount = $this->link->prepare('UPDATE accounts SET amount = ? WHERE name = ? AND userid = ?');
 		$modAccount->bindValue(1,$new,PDO::PARAM_STR);
 		$modAccount->bindValue(2,$trans['accountname'],PDO::PARAM_STR);
-		$modAccount->bindValue(3,$userid,PDO::PARAM_STR);
+		$modAccount->bindValue(3,$userid,PDO::PARAM_INT);
 		$success =  $modAccount->execute();
 
 		if(!$success){return false;}
@@ -333,7 +333,7 @@ class Database{
 		$getT->bindValue(1,$id,PDO::PARAM_INT);
 		$getT->execute();
 
-		$results = $get->fetchall(PDO::FETCH_ASSOC);
+		$results = $getT->fetchall(PDO::FETCH_ASSOC);
 		$transaction = $results[0];//Always unique so only one
 
 		return $transaction;
@@ -342,6 +342,53 @@ class Database{
 
 	public function editTransaction($id,$account,$userid,$newData){
 		$transaction = $this->getTransactionInfo($id);
+		$oldAmount = $transaction['amount'];
+		$newAmount = $newData['amount'];
+		$mod = strval($newAmount) - strval($oldAmount);
+
+		//Now I need the amount thats in the account
+		$acct = $this->link->prepare('SELECT amount FROM accounts WHERE name = ? AND userid = ?');
+		$acct->bindValue(1,$account,PDO::PARAM_STR);
+		$acct->bindValue(2,$userid.PDO::PARAM_INT);
+		$goodAccount = $acct->execute();
+
+		if(!$goodAccount){
+			return false;
+		}
+
+		//update account
+		$result = $acct->fetch(PDO::FETCH_ASSOC);
+		$newBalance = strval($result['amount']) + $mod;
+		$edit = $this->link->prepare('UPDATE accounts SET amount = ? WHERE name = ? AND userid = ?;');
+		$edit->bindValue(1,$newBalance,PDO::PARAM_STR);
+		$edit->bindValue(2,$transaction['accountname'],PDO::PARAM_STR);
+		$edit->bindValue(3,$userid,PDO::PARAM_INT);
+		$valid = $edit->execute();
+
+		if(!$valid){
+			return false;
+		}
+
+		//update the transactions
+		$upTrans = $this->link->prepare("UPDATE accounts SET `amount`=?, SET `name`=?, SET `date`=? WHERE `id` = ? ;");
+		$upTrans->bindValue(1,$newData['amount'],PDO::PARAM_STR);
+		$upTrans->bindValue(2,$newData['name'],PDO::PARAM_STR);
+		$upTrans->bindValue(3,$newData['date'],PDO::PARAM_STR);
+		$upTrans->bindValue(4,$id,PDO::PARAM_INT);
+		$success = $upTrans->execute();
+
+		if(!$success){
+			//update account
+			$result = $acct->fetch(PDO::FETCH_ASSOC);
+			$edit = $this->link->prepare('UPDATE accounts SET amount = ? WHERE name = ? AND userid = ?;');
+			$edit->bindValue(1,$result['amount'],PDO::PARAM_STR);
+			$edit->bindValue(2,$transaction['accountname'],PDO::PARAM_STR);
+			$edit->bindValue(3,$userid,PDO::PARAM_INT);
+			$valid = $edit->execute();
+			return false;
+		}
+
+		return true;
 
 
 	}

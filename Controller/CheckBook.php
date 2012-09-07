@@ -283,7 +283,7 @@ class CheckBook{
 				if(!is_null($this->transID)){ 
 					$info = $this->db->getTransactionInfo($this->transID);
 					echo '<div class ="largespacer"></div>';
-					echo '<form id="Login" name="login" method="post" action="/BudgetBuddy/CheckBook.php/' .$this->accountToLoad.':DOEditAccount:'. $this->transID .'">';
+					echo '<form id="Login" name="login" method="post" action="/BudgetBuddy/CheckBook.php/' .$this->accountToLoad.':DOEditTransaction:'. $this->transID .'">';
 					
 						echo '<label class="Login">Transaction Description<br />';
 						echo '</label>';
@@ -297,7 +297,7 @@ class CheckBook{
 
 						echo '<label class="Login">Date<br />';
 						echo '</label>';
-						echo '<input type="text" name="amount" id="amount" class="rounded" value = "'. View::getJustDate($info["date"]).'"/>';
+						echo '<input type="text" name="amount" id="amount" class="rounded" value = "'. View::convertSlashToHyph(View::getJustDate($info["date"])).'"/>';
 
 						echo '<div class="largespacer"></div>';
 							echo '<button type="submit" class ="trans" name="confirm" value = "yes" >Submit</button>';
@@ -308,7 +308,7 @@ class CheckBook{
 				}
 				break;
 			case 'DOEditTransaction':
-				if($POST_['confirm'] == "yes"){ 
+				if($_POST['confirm'] == "yes"){ 
 					if(!is_null($this->transID)){
 						$success = $this->db->EditTransaction($this->transID,$this->accountToLoad,$this->userid,$_POST);
 						echo $success ? ' Transaction Edited Successfully' : 'Error Editing Transaction';
