@@ -19,6 +19,50 @@ class View {
 
 	}
 
+	static function numToMonth($m){
+		$month = 'Jan';
+		switch(strval($m)){
+			case 1:
+				break;
+			case 2:
+				$month = 'Feb';
+				break;
+			case 3:
+				$month = 'Mar';
+				break;
+			case 4:
+				$month = 'Apr';
+				break;
+			case 5:
+				$month = 'May';
+				break;
+			case 6:
+				$month = 'Jun';
+				break;
+			case 7:
+				$month = 'Jul';
+				break;
+			case 8:
+				$month = 'Aug';
+				break;
+			case 9:
+				$month = 'Sep';
+				break;
+			case 10:
+				$month = 'Oct';
+				break;
+			case 11:
+				$month = 'Nov';
+				break;
+			case 12:
+				$month = 'Dec';
+				break;
+			default:
+				break;
+		}
+		return $month;
+	}
+
 	static function getJustDate($date){
 		//"2012-08-30 18:47:37" -> 08/30/12
 		$midway = explode(' ',$date);
@@ -27,7 +71,8 @@ class View {
 	}
 
 	static function convertSlashToHyph($date){
-		//"09/06/12" -> 09-06-12
+		//"09/06/12" -> 09-06-12ma
+
 		$nDate = explode('/', $date);
 		return $nDate[0] . '-' . $nDate[1] . '-' . $nDate[2];
 

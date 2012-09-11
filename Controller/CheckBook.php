@@ -12,10 +12,12 @@ class CheckBook{
 	private $userid = null;
 	private $db = null;
 	private $links = array( 'Home' => 'Home', 'Reports' => 'Reports' ,'Settings' => 'Settings');
-	private $subMenu = array('MonthBack' => '<','Delete' =>  'Delete', 'Add' => 'Add', 'Edit' => 'Edit', 'MonthForward' => '>');
+	private $subMenu = array('MonthBack' => 'Prev. Month','Delete' =>  'Delete', 'Add' => 'Add', 'Edit' => 'Edit', 'MonthForward' => 'Next Month');
 	private $accountToLoad = null;
 	private $accounts = null;
 	private $actionToTake = 'Display';
+	private $curMonth = null;
+	private $curYear = null;
 
 	public function __construct($user){
 		//We can populate and anything else from knowing the user to lookup
@@ -27,6 +29,18 @@ class CheckBook{
 		if(isset($this->accounts[0])){
 			$this->accountToLoad = $this->accounts[0];
 		}
+		//Populate the current month and year from session if its set
+		if( isset($_SESSION['curMonth'])){
+			$this->curMonth = $_SESSION['curMonth'];	
+		}else{
+			$this->curMonth = date('m');
+		}
+		if( isset($_SESSION['curYear'])){
+			$this->curYear = $_SESSION['curYear'];	
+		}else{
+			$this->curYear = date('Y');
+		}
+				
 
 	}
 
@@ -51,12 +65,30 @@ class CheckBook{
 		echo '<div class = "TransactionArea" id ="Scrollable">';
 		switch($this->actionToTake){
 			//Displays all transactions for an account
+			case 'Prev.%20Month':
+					$this->curMonth = strval($this->curMonth)-1;
+					if($this->curMonth < 1){
+						$this->curMonth = 12;
+						$this->curYear = $this->curYear -1;
+					}
+					$_SESSION['curMonth'] = $this->curMonth;
+					$_SESSION['curYear'] = $this->curYear;
+			case 'Next%20Month':
+					if($this->actionToTake == 'Next%20Month'){ 
+						$this->curMonth = $this->curMonth+1;
+						if($this->curMonth > 12){
+							$this->curMonth = 1;
+							$this->curYear = $this->curYear + 1;
+						}
+					}
+					$_SESSION['curMonth'] = $this->curMonth;
+					$_SESSION['curYear'] = $this->curYear;
 			case 'Display':
 				//If there are no accounts:
 				if(is_null($this->accountToLoad)){
 					echo '<span class = "Info">You have no account to load, use the buttons above to add some.</span>';
 				}else{
-					$month = date('Y-m-t 23:59:59');
+					$month = date($this->curYear .'-'. $this->curMonth . '-t 23:59:59');
 					//I wonder if this would break if the accountTOLoad was null.
 					$transactions = $this->db->getTransactionsForMonth($month,$this->userid,$this->accountToLoad);
 					//ADD BUTTON HERE
