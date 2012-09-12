@@ -88,6 +88,11 @@ class CheckBook{
 				if(is_null($this->accountToLoad)){
 					echo '<span class = "Info">You have no account to load, use the buttons above to add some.</span>';
 				}else{
+					//Because we can fall in from the prev or next month if we're just straight display then we want this month
+					if($this->action == 'Display'){
+						$this->curMonth = date('m');
+						$this->curYear = date('Y');
+					}
 					$month = date($this->curYear .'-'. $this->curMonth . '-t 23:59:59');
 					//I wonder if this would break if the accountTOLoad was null.
 					$transactions = $this->db->getTransactionsForMonth($month,$this->userid,$this->accountToLoad);
