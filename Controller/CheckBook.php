@@ -105,7 +105,7 @@ class CheckBook{
 						echo '<li id="DropDownLI"> Date: <input = "text" class ="trans" name="dte" value = "'. date('Y-m-d') .'"/> </li>';
 						echo '<li id="DropDownLI"> <button type="submit" class = "trans"> Add Transaction </button> </li>';
 					echo '</ul>';
-					
+					echo '<span class="HelpText" id="left">Really long names can be seen by hovering over them in the transaction view</span>';
 					echo '</form>';
 
 					echo '<div class ="largespacer"></div>';
@@ -125,6 +125,9 @@ class CheckBook{
 								case 'id':
 									echo '<td class = "Transaction">' .  str_pad($transaction[$key],5,"0",STR_PAD_LEFT) . '</td>'; 
 									break;
+								case 'name':
+									echo '<td class = "Transaction"><span title="' .  $transaction[$key] . '">'. substr($transaction[$key],0,6) . '</span></td>';
+									break;
 								default:
 									echo '<td class = "Transaction">' .  $transaction[$key] . '</td>';
 									break;
@@ -133,6 +136,7 @@ class CheckBook{
 						//Put out the Edit and Delete button
 						echo '<td class = "Transaction"><a class = "Transaction" href="/BudgetBuddy/CheckBook.php/Transaction:EditTransaction:' . $transaction['id'] .  '">Edit</a></td>';
 						echo '<td class = "Transaction"><a class = "Transaction" href="/BudgetBuddy/CheckBook.php/Transaction:DeleteTransaction:' . $transaction['id'] . '">Delete</a></td>';
+						echo '<td class = "Transaction"><a class = "Transaction" href="/BudgetBuddy/CheckBook.php/Transaction:Tag:' . $transaction['id'] . '">Tag</a></td>';
 						//Empty for balance
 						echo '<td></td>';
 						//We could add a move transaction here to move one transaction from one account to anothet
@@ -356,6 +360,12 @@ class CheckBook{
 						echo '<br />Returning to Acccount...<meta http-equiv="REFRESH" content="1; url=/BudgetBuddy/CheckBook.php/' . $acct['accountname'].':Display" />';
 
 					}//IF we have no id then none of this matters so break
+				}
+				break;
+			case 'Tag':
+				//ID for the item to be tagged
+				if(!is_null($this->transID)){ 
+
 				}
 				break;
 		}
