@@ -372,6 +372,41 @@ class CheckBook{
 						echo '<span class="HelpText" id="left">Add a tag to your transaction to categorize it. Then try out the reports feature to check out your spending habits!</span>';
 						echo '</div>';
 						//List out info for transactions, and get the tags for that transactions.
+						echo '<table>';
+							echo '<tr><th>ID</th><th>Date</th><th>Name</th><th>Amount</th><th>Tags</th></tr><tr>';
+							foreach ($info as $key => $value) {
+								//We do want to format things correctly:
+								switch(strtolower($key)){
+									case 'date':
+										echo '<td class = "Transaction">' . View::getJustDate($info[$key]) . '</td>';
+										break;
+									case 'id':
+										echo '<td class = "Transaction">' .  str_pad($info[$key],5,"0",STR_PAD_LEFT) . '</td>'; 
+										break;
+									case 'name':
+										echo '<td class = "Transaction"><span title="' .  $info[$key] . '">'. substr($info[$key],0,6) . '</span></td>';
+										break;
+									default:
+										echo '<td class = "Transaction">' .  $info[$key] . '</td>';
+										break;
+								}
+							}
+							//Get the list of tags with the transaction and put them in a drop down
+							echo '<td>';
+								echo '<select>';
+									//Get the list!
+									$tagList = $this->db->getTagsFor($this->transID);
+									foreach ($tagList as $tag) {
+										echo '<option>' . $tag . '</option>';
+									}
+								echo '</select>';
+							echo '</td>';
+							echo '</tr>';
+
+							
+						echo '</table>';
+
+						///Buttons for submit and go back
 						echo '<div class="largespacer"></div>';
 							echo '<button type="submit" class ="trans" name="confirm" value = "yes" >Submit</button>';
 							echo '<button type="submit" class ="trans" name="confirm" value = "no" >Back</button>';

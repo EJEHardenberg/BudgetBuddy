@@ -340,6 +340,8 @@ class Database{
 
 	}
 
+	
+
 	public function editTransaction($id,$account,$userid,$newData){
 		$transaction = $this->getTransactionInfo($id);
 		$oldAmount = $transaction['amount'];
@@ -393,7 +395,20 @@ class Database{
 
 	}
 
+	public function getTagsFor($id){
+		//Get tags for the transaction with tradesnsaction id of id:
+		$tags = $this->link->prepare('SELECT * FROM tags NATURAL LEFT JOIN transaction_tags WHERE trans_id = ?;');
+		$tags->bindValue(1,$id,PDO::PARAM_INT);
+		$tags->execute();
 
+		$temp = array();
+		foreach ($tags->fetchall() as $result) {
+			$temp[] = $result['name'];
+		}
+
+		return $temp;
+	}
+	
 }
 
 ?>
