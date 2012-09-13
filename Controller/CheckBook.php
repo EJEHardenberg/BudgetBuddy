@@ -393,7 +393,7 @@ class CheckBook{
 							}
 							//Get the list of tags with the transaction and put them in a drop down
 							echo '<td>';
-								echo '<select>';
+								echo '<select class="nice"><option>Tags...</option>';
 									//Get the list!
 									$tagList = $this->db->getTagsFor($this->transID);
 									foreach ($tagList as $tag) {
@@ -402,9 +402,17 @@ class CheckBook{
 								echo '</select>';
 							echo '</td>';
 							echo '</tr>';
-
-							
 						echo '</table>';
+
+						echo '<div class="largespacer"></div>';
+
+						//Now show possible tags to add: with check boxes
+						$allTags = $this->db->getAllTags();
+						echo '<div class = "" id ="Scrollable>';
+							foreach ($allTags as $tag) {
+								echo '<input type="checkbox" name="tag" value="' . $tag . '"/>'.$tag.'<br />';
+							}
+						echo '</div>';
 
 						///Buttons for submit and go back
 						echo '<div class="largespacer"></div>';

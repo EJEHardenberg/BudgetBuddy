@@ -406,3 +406,12 @@ div.TagInfo{
 	background-color: #AB87A9;
 	color: #151136;
 }
+select.nice{
+	border: 1px solid #555;
+	padding: 1px;
+	background: #fff;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ccc));
+	-webkit-appearance: none;
+	-webkit-box-shadow: 1px 1px 1px #fff;
+	-webkit-border-radius: 0.5em;
+}

@@ -408,7 +408,14 @@ class Database{
 
 		return $temp;
 	}
-	
+
+	public function getAllTags(){
+		//Gets all the tage names (might put a limit on it later on in life)
+		$tags = $this->link->prepare('SELECT name FROM tags;');
+		$tags->execute();
+		return $tags->fetchall(PDO::FETCH_COLUMN);
+	}
+
 }
 
 ?>
