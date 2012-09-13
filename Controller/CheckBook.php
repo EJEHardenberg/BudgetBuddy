@@ -408,7 +408,7 @@ class CheckBook{
 
 						//Now show possible tags to add: with check boxes
 						$allTags = $this->db->getAllTags();
-						echo '<div class = "" id ="Scrollable>';
+						echo '<div class = "" id ="Scrollable">';
 							foreach ($allTags as $tag) {
 								echo '<input type="checkbox" name="tag" value="' . $tag . '"/>'.$tag.'<br />';
 							}
