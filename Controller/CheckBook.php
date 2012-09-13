@@ -365,6 +365,24 @@ class CheckBook{
 			case 'Tag':
 				//ID for the item to be tagged
 				if(!is_null($this->transID)){ 
+					$info = $this->db->getTransactionInfo($this->transID);
+					echo '<div class ="largespacer"></div>';
+					echo '<form id="Login" name="login" method="post" action="/BudgetBuddy/CheckBook.php/' .$this->accountToLoad.':TagAdd:'. $this->transID .'">';
+						echo '<div class="TagInfo">';
+						echo '<span class="HelpText" id="left">Add a tag to your transaction to categorize it. Then try out the reports feature to check out your spending habits!</span>';
+						echo '</div>';
+						//List out info for transactions, and get the tags for that transactions.
+						echo '<div class="largespacer"></div>';
+							echo '<button type="submit" class ="trans" name="confirm" value = "yes" >Submit</button>';
+							echo '<button type="submit" class ="trans" name="confirm" value = "no" >Back</button>';
+						echo '<div class="largespacer"></div>'; 	
+					
+					echo '</form>';	
+				}
+				break;
+			case 'TagAdd':
+				//ID for the item to be tagged
+				if(!is_null($this->transID)){ 
 
 				}
 				break;
