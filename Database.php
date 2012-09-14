@@ -434,8 +434,8 @@ class Database{
 
 		$ins = $this->link->prepare('INSERT INTO tags (name) SELECT ? FROM tags WHERE NOT EXISTS( SELECT name FROM tags WHERE name = ? ) LIMIT 1;');
 		foreach ($tags as $tag) {
-			$ins->bindValue(1,$tag,PDO::PARAM_STR);
-			$ins->bindValue(2,$tag,PDO::PARAM_STR);
+			$ins->bindValue(1,trim($tag),PDO::PARAM_STR);
+			$ins->bindValue(2,trim($tag),PDO::PARAM_STR);
 			$ins->execute(); 
 		}
 
@@ -443,7 +443,7 @@ class Database{
 		$tagAdd = $this->link->prepare('INSERT INTO transaction_tags (trans_id,tag_id) SELECT ?, id FROM tags WHERE name = ?;');
 		foreach ($tags as $tag) {
 			$tagAdd->bindValue(1,$id,PDO::PARAM_INT);
-			$tagAdd->bindValue(2,$tag,PDO::PARAM_STR);
+			$tagAdd->bindValue(2,trim($tag),PDO::PARAM_STR);
 			$tagAdd->execute();
 		}
 

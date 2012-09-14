@@ -27,7 +27,7 @@ class CheckBook{
 		$this->userid = $this->db->matchNameToID($user);
 		$this->accounts = $this->db->getAccountNamesByID($this->userid);
 		if(isset($this->accounts[0])){
-			$this->accountToLoad = $this->accounts[0];
+			$this->accountToLoad = rawurldecode($this->accounts[0]);
 		}
 		//Populate the current month and year from session if its set
 		if( isset($_SESSION['curMonth'])){
@@ -46,8 +46,8 @@ class CheckBook{
 
 	public function parseActions(){
 		$url  = explode(':',end(explode('/', $_SERVER['REQUEST_URI']))) ;
-		$this->accountToLoad = $url[0];
-		$this->actionToTake = $url[1];
+		$this->accountToLoad = rawurldecode($url[0]);
+		$this->actionToTake = rawurldecode($url[1]);
 		//Transaction stuff
 		if(isset($url[2])){
 			$this->transID = $url[2];
@@ -201,7 +201,7 @@ class CheckBook{
 					//Oh hey an account exists? Better make sure of that
 					//Put out a comfirmation screen:
 					echo '<div class ="largespacer"></div>';
-					echo '<form action = "/BudgetBuddy/CheckBook.php/' . $this->accountToLoad . ':DeleteYes" method="post"> ';
+					echo '<form action = "/BudgetBuddy/CheckBook.php/' . ($this->accountToLoad) . ':DeleteYes" method="post"> ';
 						echo 'Deleting the account ' . $this->accountToLoad . ' is permanent and you will lose all transactions on this account, are you sure?';
 						echo '<div class ="largespacer"></div>';
 						echo '<button type = "submit" name="confirm" value = "yes">Delete This Account</button>';
@@ -393,13 +393,13 @@ class CheckBook{
 							}
 							//Get the list of tags with the transaction and put them in a drop down
 							echo '<td>';
-								echo '<select class="nice"><option>Tags...</option>';
+								echo '<div id="taglist"><select class="nice"><option>Tags...</option>';
 									//Get the list!
 									$tagList = $this->db->getTagsFor($this->transID);
 									foreach ($tagList as $tag) {
 										echo '<option>' . $tag . '</option>';
 									}
-								echo '</select>';
+								echo '</select></div>';
 							echo '</td>';
 							echo '</tr>';
 						echo '</table>';
@@ -439,14 +439,16 @@ class CheckBook{
 					 	//Get the tags from the checkboxes
 						if(!empty($_POST['checkTags'])){
 							foreach ($_POST['checkTags'] as $tag) {
-								$tags[]=$tag;	
+								$tags[]=trim($tag);	
 							}
+
+							//Pass all those tags to the database to add to the transaction
+							$this->db->addTagsToTransaction($tags,$this->transID);
 						}
-						//Pass all those tags to the database to add to the transaction
-						$this->db->addTagsToTransaction($tags,$this->transID);
 					}
 				}
 				//REDIRECT 
+				echo '<br />Returning to Transaction...<meta http-equiv="REFRESH" content="1; url=/BudgetBuddy/CheckBook.php/Transactions:Tag:' . $this->transID .'" />';
 				break;
 		}
 		echo '</div>';
