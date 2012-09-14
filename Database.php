@@ -409,14 +409,15 @@ class Database{
 		return $temp;
 	}
 
-	public function getAllTags(){
+	public function getAllTags($userid){
 		//Gets all the tage names (might put a limit on it later on in life)
-		$tags = $this->link->prepare('SELECT name FROM tags;');
+		$tags = $this->link->prepare('SELECT name FROM tags WHERE uid = ?;');
+		$tags->bindValue(1,$userid,PDO::PARAM_INT);
 		$tags->execute();
 		return $tags->fetchall(PDO::FETCH_COLUMN);
 	}
 
-	public function addTagsToTransaction($tags,$id){
+	public function addTagsToTransaction($tags,$id,$userid){
 		//First add all the tags to teh database that aren't in the database
 		//FUN FACT! This insert won't work if the tags table is empty. There must be an initial tag in the database for this to work at all
 		//which came first, the tag or the table? who knows... I'm going to enforce always having a single tag in the database, aka when you delete
@@ -430,6 +431,7 @@ class Database{
 			$defaul->execute();
 
 			$defaul = $this->link->prepare('INSERT INTO tags (id,name) VALUES (0,"MiscEvilNoOneGuess");');
+			$defaul->bindValue(1,$userid,PDO::PARAM_INT);
 			$defaul->execute();
 
 		}
@@ -439,10 +441,11 @@ class Database{
 			unset($tags[0]);
 		}
 
-		$ins = $this->link->prepare('INSERT INTO tags (name) SELECT ? FROM tags WHERE NOT EXISTS( SELECT name FROM tags WHERE name = ? ) LIMIT 1;');
+		$ins = $this->link->prepare('INSERT INTO tags (uid,name) SELECT ?,? FROM tags WHERE NOT EXISTS( SELECT name FROM tags WHERE name = ? ) LIMIT 1;');
 		foreach ($tags as $tag) {
-			$ins->bindValue(1,trim($tag),PDO::PARAM_STR);
+			$ins->bindValue(1,$userid,PDO::PARAM_INT);
 			$ins->bindValue(2,trim($tag),PDO::PARAM_STR);
+			$ins->bindValue(3,trim($tag),PDO::PARAM_STR);
 			$ins->execute(); 
 		}
 
