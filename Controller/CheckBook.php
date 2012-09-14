@@ -415,9 +415,9 @@ class CheckBook{
 
 						//Now show possible tags to add: with check boxes
 						$allTags = $this->db->getAllTags();				
-						echo '<div class = "" id ="Scrollable">';
+						echo '<div class = "Checkboxes" id ="Scrollable">';
 							foreach ($allTags as $tag) {
-								echo '<input type="checkbox" class = "TagCheck" name="checkTags[]" value="' . trim($tag) . '"/>'.trim($tag);
+								echo '<label class = "tagLabel"><input type="checkbox" class = "TagCheck" name="checkTags[]" value="' . trim($tag) . '"/><span class = "tagSpan">'.trim($tag).'</span></label>';
 							}
 						echo '</div>';
 
@@ -449,9 +449,12 @@ class CheckBook{
 						
 						
 					}
+					echo '<br />Returning to Transaction...<meta http-equiv="REFRESH" content="1; url=/BudgetBuddy/CheckBook.php/Transaction:Tag:' . $this->transID .'" />';
+				}else{
+					$info = $this->db->getTransactionInfo($this->transID);
+					$account = $info['accountname'];
+					echo '<br />Returning to Transaction...<meta http-equiv="REFRESH" content="1; url=/BudgetBuddy/CheckBook.php/'.$account.':Display"/>';
 				}
-				//REDIRECT 
-				echo '<br />Returning to Transaction...<meta http-equiv="REFRESH" content="1; url=/BudgetBuddy/CheckBook.php/Transaction:Tag:' . $this->transID .'" />';
 				break;
 		}
 		echo '</div>';

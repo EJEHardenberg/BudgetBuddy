@@ -424,10 +424,20 @@ textarea.TagEnter{
 }
 input.TagCheck{
 	background-color: #8B87A9;
-	font-size: 11px;
+	font-size: 10px;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;	
+	vertical-align: middle;
+	
 }
 /* Making the drop down for tags not extend to the longest element*/
-#taglist{
-	width:10px;
+span.tagSpan{
+	font-size: 11px;
+	vertical-align: middle;
+	
+}
+div.Checkboxes{
+	text-align: left;
+}
+label.tagLabel{
+	display: inline-block;
 }

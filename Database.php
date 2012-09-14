@@ -429,12 +429,15 @@ class Database{
 			$defaul = $this->link->prepare('ALTER TABLE tags AUTO_INCREMENT = 1; ');
 			$defaul->execute();
 
-			$defaul = $this->link->prepare('INSERT INTO tags (id,name) VALUES (0,"Misc");');
+			$defaul = $this->link->prepare('INSERT INTO tags (id,name) VALUES (0,"MiscEvilNoOneGuess");');
 			$defaul->execute();
 
 		}
 
-		$tags[0] = $tags[0] == "" ? "Misc" : $tags[0];
+		$tags[0] = $tags[0] == "" ? "MiscEvilNoOneGuess" : $tags[0];
+		if($tags[0] == "MiscEvilNoOneGuess"){
+			unset($tags[0]);
+		}
 
 		$ins = $this->link->prepare('INSERT INTO tags (name) SELECT ? FROM tags WHERE NOT EXISTS( SELECT name FROM tags WHERE name = ? ) LIMIT 1;');
 		foreach ($tags as $tag) {
