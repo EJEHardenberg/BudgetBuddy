@@ -397,7 +397,7 @@ class Database{
 
 	public function getTagsFor($id){
 		//Get tags for the transaction with tradesnsaction id of id:
-		$tags = $this->link->prepare('SELECT DISTINCT(name) FROM tags INNER JOIN transaction_tags WHERE trans_id = ? ');
+		$tags = $this->link->prepare('SELECT name FROM tags LEFT JOIN (transaction_tags) ON  transaction_tags.tag_id=tags.id WHERE trans_id = ? ');
 		$tags->bindValue(1,$id,PDO::PARAM_INT);
 		$tags->execute();
 
@@ -426,11 +426,15 @@ class Database{
 		$check->execute();
 		if(($check->fetch(PDO::FETCH_COLUMN)) == 0){
 			//Insert
-			$defaul = $this->link->prepare('ALTER TABLE tags AUTO_INCREMENT = 0; ');
+			$defaul = $this->link->prepare('ALTER TABLE tags AUTO_INCREMENT = 1; ');
 			$defaul->execute();
-			$defaul = $this->link->prepare('INSERT INTO tags (name) VALUES ("Misc");');
+
+			$defaul = $this->link->prepare('INSERT INTO tags (id,name) VALUES (0,"Misc");');
 			$defaul->execute();
+
 		}
+
+		$tags[0] = $tags[0] == "" ? "Misc" : $tags[0];
 
 		$ins = $this->link->prepare('INSERT INTO tags (name) SELECT ? FROM tags WHERE NOT EXISTS( SELECT name FROM tags WHERE name = ? ) LIMIT 1;');
 		foreach ($tags as $tag) {

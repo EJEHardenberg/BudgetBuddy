@@ -417,7 +417,7 @@ class CheckBook{
 						$allTags = $this->db->getAllTags();				
 						echo '<div class = "" id ="Scrollable">';
 							foreach ($allTags as $tag) {
-								echo '<input type="checkbox" class = "TagCheck" name="checkTags[]" value="' . $tag . '"/>'.$tag;
+								echo '<input type="checkbox" class = "TagCheck" name="checkTags[]" value="' . trim($tag) . '"/>'.trim($tag);
 							}
 						echo '</div>';
 
@@ -437,18 +437,21 @@ class CheckBook{
 						//Get the tags from the entered_tags textarea
 						$tags = explode(',', $_POST['entered_tags']);
 					 	//Get the tags from the checkboxes
-						if(!empty($_POST['checkTags'])){
-							foreach ($_POST['checkTags'] as $tag) {
-								$tags[]=trim($tag);	
-							}
 
-							//Pass all those tags to the database to add to the transaction
-							$this->db->addTagsToTransaction($tags,$this->transID);
+						foreach ($_POST['checkTags'] as $tag) {
+							$tags[]=trim($tag);	
 						}
+
+						//I really need a way to protect against null/empty string
+
+						//Pass all those tags to the database to add to the transaction
+						$this->db->addTagsToTransaction($tags,$this->transID);
+						
+						
 					}
 				}
 				//REDIRECT 
-				echo '<br />Returning to Transaction...<meta http-equiv="REFRESH" content="1; url=/BudgetBuddy/CheckBook.php/Transactions:Tag:' . $this->transID .'" />';
+				echo '<br />Returning to Transaction...<meta http-equiv="REFRESH" content="1; url=/BudgetBuddy/CheckBook.php/Transaction:Tag:' . $this->transID .'" />';
 				break;
 		}
 		echo '</div>';
