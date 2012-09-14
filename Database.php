@@ -402,10 +402,10 @@ class Database{
 		$tags->execute();
 
 		$temp = array();
-		foreach ($tags->fetchall() as $result) {
+		foreach ($tags->fetchall(PDO::FETCH_ASSOC) as $result) {
 			$temp[] = $result['name'];
 		}
-
+		var_dump($temp);
 		return $temp;
 	}
 
@@ -414,6 +414,41 @@ class Database{
 		$tags = $this->link->prepare('SELECT name FROM tags;');
 		$tags->execute();
 		return $tags->fetchall(PDO::FETCH_COLUMN);
+	}
+
+	public function addTagsToTransaction($tags,$id){
+		//First add all the tags to teh database that aren't in the database
+		//FUN FACT! This insert won't work if the tags table is empty. There must be an initial tag in the database for this to work at all
+		//which came first, the tag or the table? who knows... I'm going to enforce always having a single tag in the database, aka when you delete
+		//tags if theres nothing in the database after the deletion, it will add a misc tag 
+		//OR Better yet, since we can assume there won't be a lot of tags to add in most cases we do the check here!
+		$check = $this->link->prepare('SELECT count(id) from tags;');
+		$check->execute();
+		if(($check->fetch(PDO::FETCH_COLUMN)) == 0){
+			//Insert
+			$defaul = $this->link->prepare('ALTER TABLE tags AUTO_INCREMENT = 0; ');
+			$defaul->execute();
+			$defaul = $this->link->prepare(' INSERT INTO tags (name) VALUES ("Misc");');
+			$defaul->execute();
+		}
+
+		$ins = $this->link->prepare('INSERT INTO tags (name) SELECT ? FROM tags WHERE NOT EXISTS( SELECT name FROM tags WHERE name = ? ) LIMIT 1;');
+		foreach ($tags as $tag) {
+			$ins->bindValue(1,$tag,PDO::PARAM_STR);
+			$ins->bindValue(2,$tag,PDO::PARAM_STR);
+			$ins->execute(); 
+		}
+
+		//Now actually link the tags to the id
+		$tagAdd = $this->link->prepare('INSERT INTO transaction_tags (trans_id,tag_id) SELECT ?, id FROM tags WHERE name = ?;');
+		foreach ($tags as $tag) {
+			$tagAdd->bindValue(1,$id,PDO::PARAM_INT);
+			$tagAdd->bindValue(2,$tag,PDO::PARAM_STR);
+			$tagAdd->execute();
+		}
+
+		return true;
+		
 	}
 
 }

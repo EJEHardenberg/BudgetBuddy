@@ -373,7 +373,7 @@ class CheckBook{
 						echo '</div>';
 						//List out info for transactions, and get the tags for that transactions.
 						echo '<table>';
-							echo '<tr><th>ID</th><th>Date</th><th>Name</th><th>Amount</th><th>Tags</th></tr><tr>';
+							echo '<tr><th>ID</th><th>Date</th><th>Account</th><th>Name</th><th></th><th></th><th>Tags</th></tr><tr>';
 							foreach ($info as $key => $value) {
 								//We do want to format things correctly:
 								switch(strtolower($key)){
@@ -398,19 +398,27 @@ class CheckBook{
 									$tagList = $this->db->getTagsFor($this->transID);
 									foreach ($tagList as $tag) {
 										echo '<option>' . $tag . '</option>';
+										var_dump( $tag);
 									}
 								echo '</select>';
 							echo '</td>';
 							echo '</tr>';
 						echo '</table>';
 
-						echo '<div class="largespacer"></div>';
+
+						//Instructional text
+						echo '<div class="TagInfo">';
+						echo '<span class="HelpText" id="left">To add a tag either write it in the space below or check the box of the existing tag you want to add.<br />To add multiple tags: check off multiple boxes, or enter the tags seperated by commas in the text field below.</span>';
+						echo '</div>';
+
+						//Text field to enter new field
+						echo '<textarea name="entered_tags", rows = "2" cols="40" class="TagEnter"></textarea>';
 
 						//Now show possible tags to add: with check boxes
-						$allTags = $this->db->getAllTags();
+						$allTags = $this->db->getAllTags();				
 						echo '<div class = "" id ="Scrollable">';
 							foreach ($allTags as $tag) {
-								echo '<input type="checkbox" name="tag" value="' . $tag . '"/>'.$tag.'<br />';
+								echo '<input type="checkbox" class = "TagCheck" name="checkTags[]" value="' . $tag . '"/>'.$tag;
 							}
 						echo '</div>';
 
@@ -425,9 +433,21 @@ class CheckBook{
 				break;
 			case 'TagAdd':
 				//ID for the item to be tagged
-				if(!is_null($this->transID)){ 
-
+				if($_POST['confirm']=='yes'){ 
+					if(!is_null($this->transID)){ 
+						//Get the tags from the entered_tags textarea
+						$tags = explode(',', $_POST['entered_tags']);
+					 	//Get the tags from the checkboxes
+						if(!empty($_POST['checkTags'])){
+							foreach ($_POST['checkTags'] as $tag) {
+								$tags[]=$tag;	
+							}
+						}
+						//Pass all those tags to the database to add to the transaction
+						$this->db->addTagsToTransaction($tags,$this->transID);
+					}
 				}
+				//REDIRECT 
 				break;
 		}
 		echo '</div>';

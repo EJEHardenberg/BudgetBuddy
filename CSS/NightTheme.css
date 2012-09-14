@@ -415,3 +415,13 @@ select.nice{
 	-webkit-box-shadow: 1px 1px 1px #fff;
 	-webkit-border-radius: 0.5em;
 }
+textarea.TagEnter{
+	padding:3px;
+	font-size: 11px;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+}
+input.TagCheck{
+	background-color: #8B87A9;
+	font-size: 11px;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;	
+}
