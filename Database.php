@@ -397,15 +397,15 @@ class Database{
 
 	public function getTagsFor($id){
 		//Get tags for the transaction with tradesnsaction id of id:
-		$tags = $this->link->prepare('SELECT * FROM tags NATURAL LEFT JOIN transaction_tags WHERE trans_id = ?;');
+		$tags = $this->link->prepare('SELECT DISTINCT(name) FROM tags INNER JOIN transaction_tags WHERE trans_id = ? ');
 		$tags->bindValue(1,$id,PDO::PARAM_INT);
 		$tags->execute();
 
 		$temp = array();
-		foreach ($tags->fetchall(PDO::FETCH_ASSOC) as $result) {
+		$tagArray = $tags->fetchall(PDO::FETCH_ASSOC);
+		foreach ($tagArray as $result) {
 			$temp[] = $result['name'];
 		}
-		var_dump($temp);
 		return $temp;
 	}
 
@@ -428,7 +428,7 @@ class Database{
 			//Insert
 			$defaul = $this->link->prepare('ALTER TABLE tags AUTO_INCREMENT = 0; ');
 			$defaul->execute();
-			$defaul = $this->link->prepare(' INSERT INTO tags (name) VALUES ("Misc");');
+			$defaul = $this->link->prepare('INSERT INTO tags (name) VALUES ("Misc");');
 			$defaul->execute();
 		}
 
@@ -447,8 +447,6 @@ class Database{
 			$tagAdd->execute();
 		}
 
-		return true;
-		
 	}
 
 }

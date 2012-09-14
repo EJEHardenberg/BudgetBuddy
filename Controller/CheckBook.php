@@ -89,7 +89,7 @@ class CheckBook{
 					echo '<span class = "Info">You have no account to load, use the buttons above to add some.</span>';
 				}else{
 					//Because we can fall in from the prev or next month if we're just straight display then we want this month
-					if($this->action == 'Display'){
+					if($this->actionToTake == 'Display'){
 						$this->curMonth = date('m');
 						$this->curYear = date('Y');
 					}
@@ -398,7 +398,6 @@ class CheckBook{
 									$tagList = $this->db->getTagsFor($this->transID);
 									foreach ($tagList as $tag) {
 										echo '<option>' . $tag . '</option>';
-										var_dump( $tag);
 									}
 								echo '</select>';
 							echo '</td>';
