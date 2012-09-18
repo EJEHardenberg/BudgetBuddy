@@ -43,7 +43,11 @@ class Settings{
 			$view->changeUser();
 			$view->changePass();
 			$view->changeTheme($this->db->getThemes());
-
+			echo '<div class = "largespacer"></div>';
+			echo '<div class = "largespacer"></div>';
+			echo '<div class = "largespacer"></div>';
+			echo '<div class = "largespacer"></div>';
+			$view->TagManagerLink();
 			echo '</div>';
 			//Render the Menu Items
 			echo '<div class = "largespacer"></div>';

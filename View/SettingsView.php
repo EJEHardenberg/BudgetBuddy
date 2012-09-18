@@ -61,10 +61,7 @@ class SettingsView extends View{
 	public function TagManagerLink(){
 		//Displays the link to the tag manager
 		echo '<div>';
-			echo '<form name = "TagMan" method="post" action = "/BudgetBuddy/Settings.php/Tag">';
-				echo '<input type = "submit" value = "Go to Tag Manager">';
-			echo '</form>';
-
+			echo '<a class="tagManLink" href="/BudgetBuddy/Settings.php/Tag" >Click here for the Tag Manager</a>';
 		echo '</div>';
 	}
 

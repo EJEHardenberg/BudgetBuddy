@@ -476,3 +476,8 @@ input.change{
 #themeselect{
 	width: 5.5em;
 }
+a.tagManLink{
+	font-size: 14px;
+	font-weight: bold;
+	color: #8B87A9;
+}
