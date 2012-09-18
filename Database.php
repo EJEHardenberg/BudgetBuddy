@@ -88,6 +88,16 @@ class Database{
 		return $theme['theme'];
 	}
 
+	public function getThemes(){
+		if(!isset($this->link)){return false;}
+
+		$getThemes = $this->link->prepare('SELECT distinct(theme) FROM userinfo; ');
+		$getThemes->execute();
+		$themes = $getThemes->fetchall(PDO::FETCH_ASSOC);
+
+		return $themes[0];
+	}
+
 	public function attemptLogin($name, $pass){
 		if(!isset($this->link)){ return false;}
 		//we should insure that both the name and password aren't injected evil code.

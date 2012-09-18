@@ -441,3 +441,38 @@ div.Checkboxes{
 label.tagLabel{
 	display: inline-block;
 }
+h3.changeLink{
+	color: #8B87A9;
+	text-decoration: underline;
+	text-align: left;
+	padding-left: 15px;
+}
+#userDrop,#passDrop,#themeDrop{
+	display: none;
+	color: #FFFFFF;
+	float: left;
+	padding-left: 5px;
+	width: 100%;	
+}
+input.change{
+    border: 1px solid #ccc;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: 2px 2px 3px #666;
+    -webkit-box-shadow: 2px 2px 3px #666;
+    box-shadow: 2px 2px 3px #666;
+    padding: 4px 7px;
+    outline: 0;
+    -webkit-appearance: none;
+}
+#changeHead{
+	text-align: left;
+	color: #BBB990;
+	font-weight: normal;
+	font-style: italic;
+	font-size: 14px;
+}
+#themeselect{
+	width: 5.5em;
+}
