@@ -469,6 +469,22 @@ class Database{
 
 	}
 
+	public function updateUserName($old,$new){
+		$upUse = $this->link->prepare('UPDATE userinfo SET username= ? WHERE username = ?');
+		$upUse->bindValue(1,$new,PDO::PARAM_STR);
+		$upUse->bindValue(2,$old,PDO::PARAM_STR);
+		$success =  $upUse->execute();
+		//update the logins to reflect this change
+		if($success){ 
+			$log = $this->link->prepare('UPDATE logins SET username = ? WHERE username = ?');
+			$log->bindValue(1,$new,PDO::PARAM_STR);
+			$log->bindValue(2,$old,PDO::PARAM_STR);
+			$log->execute();
+		}
+		return $success;
+
+	}
+
 }
 
 ?>

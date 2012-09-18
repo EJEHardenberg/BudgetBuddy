@@ -31,6 +31,44 @@ class Settings{
 		$this->module = rawurldecode($url[0]);
 	}
 
+	public function doAction(){
+		//Place to put the ugly switch for everything
+		switch ($this->module) {
+			case 'User':
+				//Grab things out of the post and then arcall the database (remember to update logins to reflect new username)
+				if(!$this->db->checkAvailableName($_POST['old'])){
+					//If they exist in the database
+					if($this->db->checkAvailableName($_POST['new'])){
+						//If they can actually change their name to that
+						if($_SESSION['userID']==$_POST['old']){ 
+							//If they match the session id of whose logged in (dont want nobody changing other people)
+							//Change em!
+							if(  $this->db->updateUserName($_POST['old'],$_POST['new'])){
+								$_SESSION['userID'] = $_POST['new'];
+								return true;
+							}
+						}
+					}
+				}
+				return false;
+				break;
+			case 'Pass':
+				//Generate new salt for them too!
+
+				break;
+			case 'Theme':
+
+				break;
+			case 'Tag':
+				//Dunno If I'm going to just make a tag manager page or not yet
+
+				break;
+			default:
+				//Return
+				break;
+		}
+	}
+
 	public function render(){
 			//Will render the page using the view functions and such
 			require_once('../BudgetBuddy/View/' . $this->viewName . '.php');
@@ -40,20 +78,30 @@ class Settings{
 			echo '<div>';
 			//Render the tabs for changing things
 			echo '<h3 id="changeHead">Change your...</h3>';
-			$view->changeUser();
-			$view->changePass();
-			$view->changeTheme($this->db->getThemes());
-			echo '<div class = "largespacer"></div>';
-			echo '<div class = "largespacer"></div>';
-			echo '<div class = "largespacer"></div>';
-			echo '<div class = "largespacer"></div>';
-			$view->TagManagerLink();
-			echo '</div>';
-			//Render the Menu Items
-			echo '<div class = "largespacer"></div>';
-			echo '<div class = "largespacer"></div>';
-			echo '<div class = "largespacer"></div>';
-			echo '<div class = "largespacer"></div>';
+			if($this->module == "" || $this->module == "Settings.php"){ 
+				$view->changeUser();
+				$view->changePass();
+				$view->changeTheme($this->db->getThemes());
+				echo '<div class = "largespacer"></div>';
+				echo '<div class = "largespacer"></div>';
+				echo '<div class = "largespacer"></div>';
+				echo '<div class = "largespacer"></div>';
+				$view->TagManagerLink();
+				echo '</div>';
+				//Render the Menu Items
+				echo '<div class = "largespacer"></div>';
+				echo '<div class = "largespacer"></div>';
+				echo '<div class = "largespacer"></div>';
+				echo '<div class = "largespacer"></div>';
+			}else{
+				//This is where we would call up the controller to deal with things, oh wait I am the controller!
+				if($this->doAction()){
+					echo 'Operation Completed Successfully';
+				}else{
+					echo 'Update failed, please check your input';
+				}
+				echo 'This is a redirect!';
+			}
 			$view->displayMenus($this->links);
 			$view->logout();
 	}
