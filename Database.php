@@ -485,6 +485,25 @@ class Database{
 
 	}
 
+	public function themeExists($t){
+		$thEx = $this->link->prepare('SELECT * FROM userinfo WHERE theme = ? LIMIT 1');
+		$thEx->bindValue(1,$t,PDO::PARAM_STR);
+		$success = $thEx->execute();
+		if($success){
+			if (count($thEx->fetchall()) > 0){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public function changeUserTheme($userId,$theme){
+		$up = $this->link->prepare('UPDATE userinfo SET theme = ? WHERE username = ?');
+		$up->bindValue(1,$theme,PDO::PARAM_STR);
+		$up->bindValue(2,$userId,PDO::PARAM_STR);
+		return $up->execute();
+	}
+
 }
 
 ?>

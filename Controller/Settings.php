@@ -57,7 +57,17 @@ class Settings{
 
 				break;
 			case 'Theme':
-
+				//Get the theme selected
+				$newTheme = $_POST['theme'];
+				//Make sure this theme exists in the database
+				if($this->db->themeExists($newTheme)){
+					//if it exists we can change it
+					if($this->db->changeUserTheme($_SESSION['userID'],$newTheme)){
+						//Success
+						return true;
+					}
+				}
+				return false;
 				break;
 			case 'Tag':
 				//Dunno If I'm going to just make a tag manager page or not yet
@@ -65,6 +75,7 @@ class Settings{
 				break;
 			default:
 				//Return
+				return false;
 				break;
 		}
 	}
@@ -100,7 +111,7 @@ class Settings{
 				}else{
 					echo 'Update failed, please check your input';
 				}
-				echo 'This is a redirect!';
+				echo '<br />This is a redirect!';
 			}
 			$view->displayMenus($this->links);
 			$view->logout();
