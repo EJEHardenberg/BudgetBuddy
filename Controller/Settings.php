@@ -31,11 +31,8 @@ class Settings{
 		$this->module = rawurldecode($url[0]);
 	}
 
-	public function doAction(){
-		//Place to put the ugly switch for everything
-		switch ($this->module) {
-			case 'User':
-				//Grab things out of the post and then arcall the database (remember to update logins to reflect new username)
+	public function doActionUser(){
+		//Grab things out of the post and then arcall the database (remember to update logins to reflect new username)
 				if(!$this->db->checkAvailableName($_POST['old'])){
 					//If they exist in the database
 					if($this->db->checkAvailableName($_POST['new'])){
@@ -51,13 +48,10 @@ class Settings{
 					}
 				}
 				return false;
-				break;
-			case 'Pass':
-				//Generate new salt for them too!
+	}
 
-				break;
-			case 'Theme':
-				//Get the theme selected
+	public function doActionTheme(){
+		//Get the theme selected
 				$newTheme = $_POST['theme'];
 				//Make sure this theme exists in the database
 				if($this->db->themeExists($newTheme)){
@@ -68,7 +62,18 @@ class Settings{
 					}
 				}
 				return false;
-				break;
+	}
+
+	public function doAction(){
+		//Place to put the ugly switch for everything
+		switch ($this->module) {
+			case 'User':
+				return $this->doActionUser();
+			case 'Pass':
+				//Generate new salt for them too!
+				return $this->db->changePassword($_POST['old'],$_POST['new'],$_SESSION['userID']);
+			case 'Theme':
+				return $this->doActionTheme();
 			case 'Tag':
 				//Dunno If I'm going to just make a tag manager page or not yet
 

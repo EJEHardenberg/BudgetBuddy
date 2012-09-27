@@ -104,6 +104,39 @@ class Database{
 		return $toReturn;
 	}
 
+	public function changePassword($old,$new,$name){
+		$size = mcrypt_get_iv_size(MCRYPT_CAST_256, MCRYPT_MODE_CFB);
+		//we'll have to hash the old and check it matches before doing anything
+		$selector = $this->link->prepare('select salt, hash from userinfo where username = ?;');
+		$selector->bindValue(1,$name,PDO::PARAM_STR);
+		$selector->execute();
+		$results = $selector->fetchall();
+		//There should be only one returned array because of unique ness
+		$result = $results[0];
+		//prepend the salt to the password and hash it and see if it matches
+		$salted = $result['salt'] . $old;
+		//I have to base 64 encode or mysql complains
+		$checkHash = base64_encode(hash('sha256', $salted));
+		//Now check the hash... sloooowly
+		
+		if($this->compareHashes($checkHash, $result['hash'])){
+			//IF we're all good then we can begin changing the password
+			$salt =  base64_encode(mcrypt_create_iv($size, MCRYPT_DEV_RANDOM));
+    		$salted = $salt . $new;
+    	
+    		//I have to base 64 encode or mysql complains
+    		$useHash = base64_encode(hash('sha256',$salted));
+    		//Now update the database
+    		$ups = $this->link->prepare('UPDATE userinfo SET salt = ?, hash = ? WHERE username = ? ;');
+    		$ups->bindValue(1,$salt,PDO::PARAM_STR);
+    		$ups->bindValue(2,$useHash,PDO::PARAM_STR);
+    		$ups->bindValue(3,$name,PDO::PARAM_STR);
+    		return $ups->execute();
+		}else{
+			return false;
+		}
+	}
+
 	public function attemptLogin($name, $pass){
 		if(!isset($this->link)){ return false;}
 		//we should insure that both the name and password aren't injected evil code.
