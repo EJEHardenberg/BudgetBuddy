@@ -94,8 +94,8 @@ class Settings{
 			//Render Settings links
 			echo '<div>';
 			//Render the tabs for changing things
-			echo '<h3 id="changeHead">Change your...</h3>';
 			if($this->module == "" || $this->module == "Settings.php"){ 
+				echo '<h3 id="changeHead">Change your...</h3>';
 				$view->changeUser();
 				$view->changePass();
 				$view->changeTheme($this->db->getThemes());

@@ -12,12 +12,12 @@ class TagManager{
 	public function __construct($user){
 		$this->db = new Database();
 		$this->db->connect();
-		$this->tags = $this->db->getAllTags($user);
+		$this->tags = $this->db->getAllTags($this->db->matchNameToID($user));
 		$this->user = $user;
 	}
 
 	public function getTags(){
-		return $tags;
+		return $this->tags;
 	}
 
 	public function render(){
