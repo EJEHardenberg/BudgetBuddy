@@ -95,7 +95,13 @@ class Database{
 		$getThemes->execute();
 		$themes = $getThemes->fetchall(PDO::FETCH_ASSOC);
 
-		return $themes[0];
+		
+		$toReturn = array();
+		//Flatten the array
+		foreach ($themes as $theme) {
+			$toReturn[] = $theme["theme"];
+		}
+		return $toReturn;
 	}
 
 	public function attemptLogin($name, $pass){

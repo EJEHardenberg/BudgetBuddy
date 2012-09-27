@@ -23,7 +23,7 @@ include_once( "../config.php");
 			$theme = $db->getUserTheme($_SESSION['userID']);
 			//We shouldn't have to worry about theme being null or anything because we're logged in and there must be 
 			//a theme associated with a user, but whether or not that theme exists is iffy
-			if(file_exists('/BudgetBuddy/CSS/' . $theme . 'Theme.css')){
+			if(file_exists('../BudgetBuddy/CSS/' . $theme . 'Theme.css')){
 				echo '<link rel="stylesheet" href="/BudgetBuddy/CSS/'  . $theme . 'Theme.css" type="text/css" />';
 			}else{
 				echo '<link rel="stylesheet" href="/BudgetBuddy/CSS/'  . DEFAULT_THEME . 'Theme.css" type="text/css" />';

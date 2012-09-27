@@ -1,0 +1,483 @@
+body{
+	background-color: #A8A8A8;
+}
+
+/*http://colorschemedesigner.com/#4511Tdne-w0w0*/
+div.Background{
+	/*These are essentially the same settings as the login page*/
+	background-color: #A1B92E;
+	font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+	font-size:12px;
+	width: 400px;
+	min-width: 200px;
+	min-height: 400px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 14px;
+	padding-left: 14px;
+	padding-right: 14px;
+	padding-bottom: 25px;
+	text-align: center;
+}
+h1.Welcome{
+	color: #DAFB3F;
+	font-size: 14px;
+	font-weight: bold;
+	margin-bottom: 8px;	
+}
+label.Welcome{
+	display: block;
+	font-size: 13px;
+}
+p.Date{
+	font-size: 10px;
+	color: #E3FB71;
+}
+div.Accounts{
+	background-color: #85A000;
+	display: block;
+	font-size:  12px;
+	min-height: 200px;
+	height: 200px;
+	
+}
+h1.Home{
+	color: #000000;
+	font-weight: bold;
+	font-size: 15px;
+}
+h2.Accounts{
+	font-size: 13px;
+	font-weight: bold;
+	text-decoration: underline;
+	text-align: left;
+	color: #330570;
+}
+hr.Accounts{
+	width: 85%;
+	height: 1px;
+	border-width: 0;
+	color: #000000;
+	background-color: #000000;
+}
+
+ul.Accounts{
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	font-size: 12;
+	color: #94002D;
+	font-weight: bold;
+	line-height: 30px;
+}
+span.Spacer{
+	float: left;
+	width: 25px;
+}
+span.AccountAmount{
+	font-weight: normal;
+	color: #FFFFFF;
+	float: left;
+	width: 75px;
+	text-align: right;
+}
+span.AccountName{
+	float: left;
+	width: 75px;
+	text-align: left;
+}
+button{
+	width: 75%;
+	-moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: 2px 2px 3px #666;
+    -webkit-box-shadow: 2px 2px 3px #666;
+    box-shadow: 2px 2px 3px #666;
+}
+div.largespacer{
+	clear: both;
+	height: 10px;
+	padding-bottom: 5px;
+}
+/*Menu Styling */
+div.Menus{
+	background-color: #CCF600;
+	width: 400px;
+	min-width: 400;
+	min-height: 80px;
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
+}
+li.Menu{
+	display: inline;
+	text-align: center;
+	text-decoration: none;
+}
+ul.Menu{
+	display: inline;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	line-height: 30px;
+	text-align: center;
+}
+div.Info{
+	text-align: left;
+	font-weight: bold;
+	background-color: #2F1F4F;
+	color: #A67D3D;
+	font-size: 12px;
+	margin-right: auto;
+	margin-left: auto;
+	width: 90%;
+}
+div.horSpace{
+	width: 50px;
+	min-width: 50px;
+	margin-right: auto;
+	margin-left: auto;
+	clear: both;
+}
+button.Menu{
+	margin-left: 4px;
+	text-align: center;
+	float: left;
+	width: 30%;
+	height: 50px;
+	display: inline;
+	-moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: 2px 2px 3px #666;
+    -webkit-box-shadow: 2px 2px 3px #666;
+    box-shadow: 2px 2px 3px #666;
+}
+span.MenuSpacer{
+	float: left;
+	width: 2px;
+}
+div.Logout{
+	margin-left: auto;
+	margin-right: auto;
+}
+button.Logout{
+	text-align: center;
+	width: 70%;
+
+	-moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: 2px 2px 3px #666;
+    -webkit-box-shadow: 2px 2px 3px #666;
+    box-shadow: 2px 2px 3px #666;	
+}
+/*Mainly apply to divs to make scrollage*/
+#Scrollable{
+	position: relative;
+	overflow: auto;
+	padding: 4px;
+}
+/*Beginning work on the submenu stuff*/
+div.SubMenu{
+	background-color: #CCF600;
+	width: 100%;
+	height: 24px;
+	padding: 0;
+	margin: 0;
+}
+div.CheckBookTabs{
+	background-color: #CCF600;
+	height: 20px;
+}
+div.TransactionArea{
+	background-color: #E3FB71;
+	height: 100%;
+	border: solid 2px;
+	border-color: #DAFB3F;
+
+}
+div.CheckBook{
+	background-color: #CCF600;
+	display: block;
+	font-size:  12px;
+	min-height: 200px;
+	height: 260px;
+
+}
+div.CheckBookTabs{
+	display: inline-block;
+	background-color: #CCF600;
+	color: #DAFB3F;
+	text-align: left;
+	min-height: 20px;
+	height: auto;
+	border: 1px solid;
+	padding: 0;
+	margin: 0;
+	width: 100%;
+}
+ul.CheckTabs{
+	text-align: left;
+	list-style-type: none;
+	text-decoration: none;
+	padding: 0;
+	margin: 0;
+}
+ul.SubMenu{
+	display:  inline;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	font-size: 12;
+	line-height: 10px;
+}
+li.CheckTabs{
+	float: left;
+	padding: 0;
+	text-align: left;
+	list-style-type: none;
+	text-decoration: none;
+	border: solid;
+	border-width: 1px 1px 0 1px;
+	margin: 0 0.5em 0 0;
+}
+button.SubMenu{
+	width: auto;
+	float: left;
+	height: 18px;
+}
+a.AccountTab:link{
+	padding: 0 2px;
+	color: #8243D6;	
+	background-color: #E3FB71;
+	text-decoration: none;
+}
+a.AccountTab:visited{
+	color: #8243D6;
+	text-decoration: none;
+	background-color: #E3FB71;
+}
+a.AccountTab:active{
+	color: #8243D6;
+	background-color: #E3FB71;
+	text-decoration: none;
+}
+a.AccountTab:hover{
+	color: #FFFFFF;
+	background-color: #CCF600;
+	text-decoration: underline;
+	padding-bottom: 1px; 
+}
+span.Info{
+	color: #000000;
+	display: block;
+	text-align: left;
+}
+table.Transaction{
+	font-size: 11px;
+	color: #E40045;
+	border: solid 1px #DAFB3F;
+	width: auto;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	text-align: center;
+	display: block;
+}
+th.Transaction{
+	border: solid 1px #DAFB3F;
+	border-top: none;
+	padding: 4px;
+	margin: 2px;
+	min-width: 30px;
+}
+td.Transaction{
+	padding: 2px;
+	margin: 0;
+	border: solid 2px #DAFB3F;
+	border-top: none;
+
+}
+a.Transaction:link{
+	color: #000000;
+	text-decoration: none;
+	padding-left: 3px;
+	padding-right: 3px;
+	background-color: #DAFB3F;
+	border: solid 1px black;
+}
+a.Transaction:visited{
+	color: #000000;
+	text-decoration: none;
+	border: solid 1px black;
+}
+a.Transaction:active{
+	color: #000000;
+	text-decoration: none;
+	border: solid 1px black;
+}
+a.Transaction:hover{
+	color: #94002D;
+	background-color: #DAFB3F;
+	text-decoration: underline;
+}
+#DropDownH5{
+	float: left;
+	padding: 0;
+	margin: 0;
+}
+#DropDownUL{
+	display: none;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	text-decoration: none;
+	font-size: 11px;
+}
+#DropDownLI{
+	display: inline;
+	margin: 0;
+	padding-left: 8px;
+	padding-right: 4px;
+	float: left;
+	text-align: center;
+	text-decoration: none;
+	font-size: 11px;
+}
+input.trans{
+	text-align: center;
+	width: 65px;
+	text-decoration: none;
+	font-size: 11px;
+	-moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: 2px 2px 3px #666;
+    -webkit-box-shadow: 2px 2px 3px #666;
+    box-shadow: 2px 2px 3px #666;
+}
+button.trans{
+	text-align: center;
+	text-decoration: none;
+	width: 100px;
+	font-size: 11px;
+	-moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: 2px 2px 3px #666;
+    -webkit-box-shadow: 2px 2px 3px #666;
+    box-shadow: 2px 2px 3px #666;	
+}
+/*Doing stuff for adding accounts */
+input.rounded {
+    border: 1px solid #ccc;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: 2px 2px 3px #666;
+    -webkit-box-shadow: 2px 2px 3px #666;
+    box-shadow: 2px 2px 3px #666;
+    padding: 4px 7px;
+    outline: 0;
+    -webkit-appearance: none;
+}
+input.rounded:focus {
+    border-color: #339933;
+}
+span.HelpText{
+	display: block;
+	font-size: 11px;
+	font-weight: normal;
+}
+label{
+	display: block;
+	font-size: 13px;
+}
+h5.Accnt{
+	font-weight: bold;
+	font-size: 11px;
+}
+#left{
+	text-align: left;
+}
+div.TagInfo{
+	background-color: #CCF600;
+	color: #151136;
+}
+select.nice{
+	border: 1px solid #555;
+	padding: 1px;
+	background: #fff;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ccc));
+	-webkit-appearance: none;
+	-webkit-box-shadow: 1px 1px 1px #fff;
+	-webkit-border-radius: 0.5em;
+	width: 3.8em;
+}
+textarea.TagEnter{
+	padding:3px;
+	font-size: 11px;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+}
+input.TagCheck{
+	background-color: #E3FB71;
+	font-size: 10px;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;	
+	vertical-align: middle;
+	
+}
+/* Making the drop down for tags not extend to the longest element*/
+span.tagSpan{
+	font-size: 11px;
+	vertical-align: middle;
+	
+}
+div.Checkboxes{
+	text-align: left;
+}
+label.tagLabel{
+	display: inline-block;
+}
+h3.changeLink{
+	color: #E3FB71;
+	text-decoration: underline;
+	text-align: left;
+	padding-left: 15px;
+}
+#userDrop,#passDrop,#themeDrop{
+	display: none;
+	color: #FFFFFF;
+	float: left;
+	padding-left: 5px;
+	width: 100%;	
+}
+input.change{
+    border: 1px solid #ccc;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: 2px 2px 3px #666;
+    -webkit-box-shadow: 2px 2px 3px #666;
+    box-shadow: 2px 2px 3px #666;
+    padding: 4px 7px;
+    outline: 0;
+    -webkit-appearance: none;
+}
+#changeHead{
+	text-align: left;
+	color: #94002D;
+	font-weight: normal;
+	font-style: italic;
+	font-size: 14px;
+}
+#themeselect{
+	width: 5.5em;
+}
+a.tagManLink{
+	font-size: 14px;
+	font-weight: bold;
+	color: #E3FB71;
+}
