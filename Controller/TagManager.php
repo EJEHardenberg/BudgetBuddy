@@ -2,6 +2,7 @@
 
 //Tag Manager Class Controller
 //Plan is to get the pieces of the database that deal with teh database to go through
+require_once('../BudgetBuddy/View/TagManagerView.php');
 
 class TagManager{
 	private $db = null;
@@ -19,6 +20,11 @@ class TagManager{
 		return $tags;
 	}
 
+	public function render(){
+		$v = new TagManagerView();
+		$v->getHead();
+		$v->getTagTable($this->getTags());
+	}
 
 }
 
