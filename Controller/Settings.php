@@ -5,6 +5,7 @@
 /* Will handle the queries and such for the checkbook.
 /****************************************/
 require_once('Database.php');
+require_once('../BudgetBuddy/Controller/TagManager.php');
 
 class Settings{
 	private $db = null;
@@ -75,8 +76,8 @@ class Settings{
 			case 'Theme':
 				return $this->doActionTheme();
 			case 'Tag':
-				//Dunno If I'm going to just make a tag manager page or not yet
-
+				$tagMan = new TagManager($_SESSION['userID']);
+				$tagMan->render();
 				break;
 			default:
 				//Return
@@ -93,8 +94,8 @@ class Settings{
 			//Render Settings links
 			echo '<div>';
 			//Render the tabs for changing things
-			echo '<h3 id="changeHead">Change your...</h3>';
 			if($this->module == "" || $this->module == "Settings.php"){ 
+				echo '<h3 id="changeHead">Change your...</h3>';
 				$view->changeUser();
 				$view->changePass();
 				$view->changeTheme($this->db->getThemes());
