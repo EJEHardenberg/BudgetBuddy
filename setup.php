@@ -70,6 +70,18 @@ if(mysql_query($transTagsTable,$link)){
 	echo "Failed to create transaction tags table\n";
 }
 
+//Add themes of day and night
+if(mysql_query("INSERT INTO userinfo (username,salt,hash,theme) VALUES('daytheme','0','0','Day');",$link)){
+	echo 'Added Day theme';
+}else{
+	echo 'Failed to add Day theme';
+}
+if(mysql_query("INSERT INTO userinfo (username,salt,hash,theme) VALUES('nighttheme','0','0','Night');",$link)){
+	echo "Added Night Theme";
+}else{
+	echo "Failed to add Night theme";
+}
+
 //Close connection to database
 mysql_close($link);
 
