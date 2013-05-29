@@ -30,7 +30,7 @@ include_once( "../config.php");
 			}
 		}
 	?>
-	<script type="text/javascript" src="Javascript/CheckBook.js">
+	<script type="text/javascript" src="/Javascript/CheckBook.js">
 	</script>
 </head>
 <body>
