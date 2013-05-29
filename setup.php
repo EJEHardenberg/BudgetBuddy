@@ -28,8 +28,9 @@ if (!$db_selected) {
 $userTable = "CREATE TABLE IF NOT EXISTS userinfo (userid INT(10) AUTO_INCREMENT PRIMARY KEY,username VARCHAR(50),salt VARCHAR(64),hash VARCHAR(64),theme VARCHAR(20));";
 $loginTable = "CREATE TABLE IF NOT EXISTS logins (username VARCHAR(50) REFERENCES userinfo(username), success INT(1), ip_address VARCHAR(15), logged_time DATETIME,id INT(10) AUTO_INCREMENT PRIMARY KEY); ";
 $accountsTable = "CREATE TABLE IF NOT EXISTS accounts (userid INT(10) REFERENCES userinfo(userid),name VARCHAR(30),amount VARCHAR(10),PRIMARY KEY(userid,name));";
-$transactionsTable = "CREATE TABLE IF NOT EXISTS transactions (userid INT(10) REFERENCES userinfo(userid),accountname VARCHAR(30) REFERENCES accounts(name),name VARCHAR(100),amount VARCHAR(15),date DATETIME )";;
-
+$transactionsTable = "CREATE TABLE IF NOT EXISTS transactions (userid INT(10) REFERENCES userinfo(userid),accountname VARCHAR(30) REFERENCES accounts(name),name VARCHAR(100),amount VARCHAR(15),date DATETIME, id INT(10) PRIMARY KEY AUTO_INCREMENT)";
+$tagsTable = "CREATE TABLE IF NOT EXISTS tags (id INT(10) AUTO_INCREMENT PRIMARY KEY,uid INT(10) REFERENCES userinfo(userid),name VARCHAR(50));";
+$transTagsTable = "CREATE TABLE IF NOT EXISTS transaction_tags (trans_id INT(10) REFERENCES transactions(id),tag_id INT(10) REFERENCES tags(id));";
 
 if(mysql_query($userTable,$link)){
 	echo "userinfo table created successfully\n";
@@ -55,6 +56,19 @@ if(mysql_query($transactionsTable,$link)){
 	echo "Failed to create transactions table\n";
 }
 
+if(mysql_query($tagsTable,$link)){
+	echo "tags table created successfully\n";
+}else{
+	echo "Failed to create tags table\n";
+}
+
+if(mysql_query($transTagsTable,$link)){
+	echo "Transaction tags table created successfully\n";
+}else{
+	echo "Failed to create transaction tags table\n";
+}
+
+//Close connection to database
 mysql_close($link);
 
 ?>
