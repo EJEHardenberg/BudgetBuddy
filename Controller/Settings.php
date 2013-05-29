@@ -117,6 +117,7 @@ class Settings{
 				}else{
 					echo 'Update failed, please check your input';
 				}
+				//Not really an refresh, add meta tags here once all is done
 				echo '<br />This is a redirect!';
 			}
 			$view->displayMenus($this->links);
