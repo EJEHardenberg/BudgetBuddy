@@ -25,7 +25,7 @@ if (!$db_selected) {
 
 //Database is selected, create tables
 
-$userTable = "CREATE TABLE IF NOT EXISTS userinfo (userid INT(10) AUTO_INCREMENT PRIMARY KEY,username VARCHAR(50),salt VARCHAR(64),hash VARCHAR(64),theme VARCHAR(20);";
+$userTable = "CREATE TABLE IF NOT EXISTS userinfo (userid INT(10) AUTO_INCREMENT PRIMARY KEY,username VARCHAR(50),salt VARCHAR(64),hash VARCHAR(64),theme VARCHAR(20));";
 $loginTable = "CREATE TABLE IF NOT EXISTS logins (username VARCHAR(50) REFERENCES userinfo(username), success INT(1), ip_address VARCHAR(15), logged_time DATETIME,id INT(10) AUTO_INCREMENT PRIMARY KEY); ";
 $accountsTable = "CREATE TABLE IF NOT EXISTS accounts (userid INT(10) REFERENCES userinfo(userid),name VARCHAR(30),amount VARCHAR(10),PRIMARY KEY(userid,name));";
 $transactionsTable = "CREATE TABLE IF NOT EXISTS transactions (userid INT(10) REFERENCES userinfo(userid),accountname VARCHAR(30) REFERENCES accounts(name),name VARCHAR(100),amount VARCHAR(15),date DATETIME )";;
