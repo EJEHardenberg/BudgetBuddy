@@ -2,7 +2,7 @@
 
 //Tag Manager Class Controller
 //Plan is to get the pieces of the database that deal with teh database to go through
-require_once('../BudgetBuddy/View/TagManagerView.php');
+require_once('View/TagManagerView.php');
 
 class TagManager{
 	private $db = null;

@@ -98,7 +98,7 @@ class CheckBook{
 					$transactions = $this->db->getTransactionsForMonth($month,$this->userid,$this->accountToLoad);
 					//ADD BUTTON HERE
 					echo '<h5 id="DropDownH5" onmouseout="DropDownColorChange(); " onmouseover="DropDownColorChange();"  onclick="dropClicked(); ">+ Add Transaction </h5><br />';
-					echo '<form action = "/BudgetBuddy/CheckBook.php/'. $this->accountToLoad .':AddTransaction" method="post">';
+					echo '<form action = "CheckBook.php/'. $this->accountToLoad .':AddTransaction" method="post">';
 					echo '<ul id="DropDownUL" >';
 						echo '<li id="DropDownLI"> Name: <input = "text" class ="trans" name="name" value = ""/> </li>';
 						echo '<li id="DropDownLI"> Amount: <input = "text" class ="trans" name="amt" value = ""/></li>';
@@ -134,9 +134,9 @@ class CheckBook{
 							}
 						}
 						//Put out the Edit and Delete button
-						echo '<td class = "Transaction"><a class = "Transaction" href="/BudgetBuddy/CheckBook.php/Transaction:EditTransaction:' . $transaction['id'] .  '">Edit</a></td>';
-						echo '<td class = "Transaction"><a class = "Transaction" href="/BudgetBuddy/CheckBook.php/Transaction:DeleteTransaction:' . $transaction['id'] . '">Delete</a></td>';
-						echo '<td class = "Transaction"><a class = "Transaction" href="/BudgetBuddy/CheckBook.php/Transaction:Tag:' . $transaction['id'] . '">Tag</a></td>';
+						echo '<td class = "Transaction"><a class = "Transaction" href="CheckBook.php/Transaction:EditTransaction:' . $transaction['id'] .  '">Edit</a></td>';
+						echo '<td class = "Transaction"><a class = "Transaction" href="CheckBook.php/Transaction:DeleteTransaction:' . $transaction['id'] . '">Delete</a></td>';
+						echo '<td class = "Transaction"><a class = "Transaction" href="CheckBook.php/Transaction:Tag:' . $transaction['id'] . '">Tag</a></td>';
 						//Empty for balance
 						echo '<td></td>';
 						//We could add a move transaction here to move one transaction from one account to anothet
@@ -157,7 +157,7 @@ class CheckBook{
 			case 'Add':
 				//Maybe I'll ask josh about validating input before submitting for the number stuff
 				echo '<div class ="largespacer"></div>';
-				echo '<form id="Login" name="login" method="post" action="/BudgetBuddy/CheckBook.php/:AddAccount">';
+				echo '<form id="Login" name="login" method="post" action="CheckBook.php/:AddAccount">';
 				
 					echo '<label class="Login">Account Name<br />';
 					echo '</label>';
@@ -183,11 +183,11 @@ class CheckBook{
 						if($success){
 							echo 'Account Successfully Created!<br />';
 							echo 'Redirecting you to your new account...';
-							echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php/' . $_POST['name'] .':Display" />'; 
+							echo '<meta http-equiv="REFRESH" content="2; url=CheckBook.php/' . $_POST['name'] .':Display" />'; 
 						}else{
 							echo 'Sorry we couldn\'t create your account right now!<br />';
 							echo 'Redirecting you to the main page';
-							echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php" />'; 
+							echo '<meta http-equiv="REFRESH" content="2; url=CheckBook.php" />'; 
 						}
 					}else{
 						echo 'Sorry, we couldn\'t create the account for some reason';
@@ -201,7 +201,7 @@ class CheckBook{
 					//Oh hey an account exists? Better make sure of that
 					//Put out a comfirmation screen:
 					echo '<div class ="largespacer"></div>';
-					echo '<form action = "/BudgetBuddy/CheckBook.php/' . ($this->accountToLoad) . ':DeleteYes" method="post"> ';
+					echo '<form action = "CheckBook.php/' . ($this->accountToLoad) . ':DeleteYes" method="post"> ';
 						echo 'Deleting the account ' . $this->accountToLoad . ' is permanent and you will lose all transactions on this account, are you sure?';
 						echo '<div class ="largespacer"></div>';
 						echo '<button type = "submit" name="confirm" value = "yes">Delete This Account</button>';
@@ -218,25 +218,25 @@ class CheckBook{
 						if($success){
 							echo 'Account Successfully Deleted.';
 							//Redirect:
-							echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php" />'; 
+							echo '<meta http-equiv="REFRESH" content="2; url=CheckBook.php" />'; 
 						}else{
 							echo 'There was a problem deleting the account. Please try again';
-							echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php" />'; 
+							echo '<meta http-equiv="REFRESH" content="2; url=CheckBook.php" />'; 
 						}
 					}else{
-						echo '<meta http-equiv="REFRESH" content="0; url=/BudgetBuddy/CheckBook.php/'.$this->accountToLoad .':Display" />'; 
+						echo '<meta http-equiv="REFRESH" content="0; url=CheckBook.php/'.$this->accountToLoad .':Display" />'; 
 					}
 				}
 				break;
 			case 'Edit':
 				if(!isset($this->accountToLoad)){
 					echo 'No account to Edit!<br /> Redirecting...';
-					echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php" />'; 
+					echo '<meta http-equiv="REFRESH" content="2; url=CheckBook.php" />'; 
 				}
 				//If theres an account to load than we should grab its data, populate the fields and pretty much do the same thing as add edit but with a different function
 				$info = $this->db->getAccountByName($this->accountToLoad,$this->userid);
 				echo '<div class ="largespacer"></div>';
-				echo '<form id="Login" name="login" method="post" action="/BudgetBuddy/CheckBook.php/' .$this->accountToLoad.':EditAccount">';
+				echo '<form id="Login" name="login" method="post" action="CheckBook.php/' .$this->accountToLoad.':EditAccount">';
 				
 					echo '<label class="Login">Account Name<br />';
 					echo '</label>';
@@ -261,21 +261,21 @@ class CheckBook{
 
 					if(!isset($this->accountToLoad) || !isset($_POST['name'])){
 						echo 'Something has gone terribly wrong! Byebye.';
-						echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php" />'; 	
+						echo '<meta http-equiv="REFRESH" content="2; url=CheckBook.php" />'; 	
 						break;				
 					}
 
 					//Post the new values to the database
 					if($this->db->setAccountInfo($_POST['name'],$_POST['amount'],$this->userid,$this->accountToLoad)){
 						echo 'Account Successfully Edited. Redirecting...';
-						echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php/' . $this->accountToLoad .':Display" />'; 
+						echo '<meta http-equiv="REFRESH" content="2; url=CheckBook.php/' . $this->accountToLoad .':Display" />'; 
 					}else{
 						echo 'An error occured, redirecting...';
-						echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/CheckBook.php" />'; 					
+						echo '<meta http-equiv="REFRESH" content="2; url=CheckBook.php" />'; 					
 					}
 
 				}else{
-					echo '<meta http-equiv="REFRESH" content="0; url=/BudgetBuddy/CheckBook.php/'.$accountToLoad.':Display" />'; 										
+					echo '<meta http-equiv="REFRESH" content="0; url=CheckBook.php/'.$accountToLoad.':Display" />'; 										
 				}
 				break;
 			case 'AddTransaction':
@@ -305,7 +305,7 @@ class CheckBook{
 					echo 'There was a problem with adding your transaction.';	 					
 				}
 				//Redirect
-				echo '<meta http-equiv="REFRESH" content="1; url=/BudgetBuddy/CheckBook.php/' . $this->accountToLoad .':Display" />';
+				echo '<meta http-equiv="REFRESH" content="1; url=CheckBook.php/' . $this->accountToLoad .':Display" />';
 				break;
 			case 'DeleteTransaction':
 				if(!is_null($this->transID)){
@@ -318,7 +318,7 @@ class CheckBook{
 						echo 'There was an issue deleting the transaction<br />Redirecting...';
 					}
 					$this->transID = null;
-					echo '<meta http-equiv="REFRESH" content="1; url=/BudgetBuddy/CheckBook.php/' . $acct['accountname'] .':Display" />';
+					echo '<meta http-equiv="REFRESH" content="1; url=CheckBook.php/' . $acct['accountname'] .':Display" />';
 				}//If not then what are we deleting seriously?
 				break;
 			case 'EditTransaction':
@@ -327,7 +327,7 @@ class CheckBook{
 
 					$info = $this->db->getTransactionInfo($this->transID);
 					echo '<div class ="largespacer"></div>';
-					echo '<form id="Login" name="login" method="post" action="/BudgetBuddy/CheckBook.php/' .$this->accountToLoad.':DOEditTransaction:'. $this->transID .'">';
+					echo '<form id="Login" name="login" method="post" action="CheckBook.php/' .$this->accountToLoad.':DOEditTransaction:'. $this->transID .'">';
 					
 						echo '<label class="Login">Transaction Description<br />';
 						echo '</label>';
@@ -357,7 +357,7 @@ class CheckBook{
 						$acct = $this->db->getTransactionInfo($this->transID);
 						$success = $this->db->EditTransaction($this->transID,$acct['accountname'],$this->userid,$_POST);
 						echo $success ? ' Transaction Edited Successfully' : 'Error Editing Transaction';
-						echo '<br />Returning to Acccount...<meta http-equiv="REFRESH" content="1; url=/BudgetBuddy/CheckBook.php/' . $acct['accountname'].':Display" />';
+						echo '<br />Returning to Acccount...<meta http-equiv="REFRESH" content="1; url=CheckBook.php/' . $acct['accountname'].':Display" />';
 
 					}//IF we have no id then none of this matters so break
 				}
@@ -367,7 +367,7 @@ class CheckBook{
 				if(!is_null($this->transID)){ 
 					$info = $this->db->getTransactionInfo($this->transID);
 					echo '<div class ="largespacer"></div>';
-					echo '<form id="Login" name="login" method="post" action="/BudgetBuddy/CheckBook.php/' .$this->accountToLoad.':TagAdd:'. $this->transID .'">';
+					echo '<form id="Login" name="login" method="post" action="CheckBook.php/' .$this->accountToLoad.':TagAdd:'. $this->transID .'">';
 						echo '<div class="TagInfo">';
 						echo '<span class="HelpText" id="left">Add a tag to your transaction to categorize it. Then try out the reports feature to check out your spending habits!</span>';
 						echo '</div>';
@@ -450,10 +450,10 @@ class CheckBook{
 						
 						
 					}
-					echo '<br />Returning to Transaction...<meta http-equiv="REFRESH" content="1; url=/BudgetBuddy/CheckBook.php/Transaction:Tag:' . $this->transID .'" />';
+					echo '<br />Returning to Transaction...<meta http-equiv="REFRESH" content="1; url=CheckBook.php/Transaction:Tag:' . $this->transID .'" />';
 				}else{	
 					$account = $info['accountname'];
-					echo '<br />Returning to Transaction...<meta http-equiv="REFRESH" content="1; url=/BudgetBuddy/CheckBook.php/'.$account.':Display"/>';
+					echo '<br />Returning to Transaction...<meta http-equiv="REFRESH" content="1; url=CheckBook.php/'.$account.':Display"/>';
 				}
 				break;
 		}
@@ -462,7 +462,7 @@ class CheckBook{
 
 	public function render(){
 		//Will render the page using the view functions and such
-		require_once('../BudgetBuddy/View/' . $this->viewName . '.php');
+		require_once('View/' . $this->viewName . '.php');
 		$view = new $this->viewName;
 		echo '<h1 class ="Home">'.$this->username."'s".' Check Book</h1><hr>';
 		//Render account tabs and their items:

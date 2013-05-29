@@ -5,7 +5,7 @@
 /* Will handle the queries and such for the checkbook.
 /****************************************/
 require_once('Database.php');
-require_once('../BudgetBuddy/Controller/TagManager.php');
+require_once('Controller/TagManager.php');
 
 class Settings{
 	private $db = null;
@@ -88,7 +88,7 @@ class Settings{
 
 	public function render(){
 			//Will render the page using the view functions and such
-			require_once('../BudgetBuddy/View/' . $this->viewName . '.php');
+			require_once('View/' . $this->viewName . '.php');
 			$view = new $this->viewName;
 			echo '<h1 class ="Home">Settings</h1><hr>';
 			//Render Settings links

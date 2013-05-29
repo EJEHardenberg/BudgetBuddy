@@ -100,7 +100,7 @@ class View {
 		foreach ($links as $link) {
 
 			echo '<li class="Menu">';
-			echo '<form name = "' . $link . '" method="post" action = "/BudgetBuddy/' . str_replace('Home', 'index', str_replace(' ', '', $link)) . '.php">';
+			echo '<form name = "' . $link . '" method="post" action = "' . str_replace('Home', 'index', str_replace(' ', '', $link)) . '.php">';
 			echo '<button class = "Menu"  type="submit">'. $link .'</button>';
 			echo '</form>';
 			echo '</li><span class = "MenuSpacer"><br /></span>';
@@ -114,7 +114,7 @@ class View {
 	function logout(){
 		//Send used back to the Login page and destroys the session
 		echo '<div class = Logout">';
-		echo '<form name = "logout" method="post" action = "../../BudgetBuddy/Logout.php">';
+		echo '<form name = "logout" method="post" action = "Logout.php">';
 		echo '<button class = "Logout"  type="submit">Logout</button>';
 		echo '</form>';
 		echo '</div>';

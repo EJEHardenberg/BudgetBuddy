@@ -13,8 +13,8 @@ include_once( "../config.php");
 	<?php
 		//Echo out the proper theme
 		if(!isset($_SESSION['userID'])){
-			echo '<link rel="stylesheet" href="/BudgetBuddy/CSS/'  . DEFAULT_THEME . 'Theme.css" type="text/css" />';
-			header('Location:../BudgetBuddy/Login.php'); //redirect
+			echo '<link rel="stylesheet" href="CSS/'  . DEFAULT_THEME . 'Theme.css" type="text/css" />';
+			header('Location:Login.php'); //redirect
 		}else{
 			//We need the database for personalized themes
 			require_once('Database.php');
@@ -23,14 +23,14 @@ include_once( "../config.php");
 			$theme = $db->getUserTheme($_SESSION['userID']);
 			//We shouldn't have to worry about theme being null or anything because we're logged in and there must be 
 			//a theme associated with a user, but whether or not that theme exists is iffy
-			if(file_exists('../BudgetBuddy/CSS/' . $theme . 'Theme.css')){
-				echo '<link rel="stylesheet" href="/BudgetBuddy/CSS/'  . $theme . 'Theme.css" type="text/css" />';
+			if(file_exists('CSS/' . $theme . 'Theme.css')){
+				echo '<link rel="stylesheet" href="CSS/'  . $theme . 'Theme.css" type="text/css" />';
 			}else{
-				echo '<link rel="stylesheet" href="/BudgetBuddy/CSS/'  . DEFAULT_THEME . 'Theme.css" type="text/css" />';
+				echo '<link rel="stylesheet" href="CSS/'  . DEFAULT_THEME . 'Theme.css" type="text/css" />';
 			}
 		}
 	?>
-	<script type="text/javascript" src="/BudgetBuddy/Javascript/CheckBook.js">
+	<script type="text/javascript" src="Javascript/CheckBook.js">
 	</script>
 </head>
 <body>
@@ -43,7 +43,7 @@ $checkControl = new CheckBook($_SESSION['userID']);
 //If for some reason the username isn't valid they go back to login
 if(!$checkControl->valid($_SESSION['userID'])){
 	//If this complains when moving to the live site, use meta tag to refresh
-	header('Location:../BudgetBuddy/Login.php'); //redirect
+	header('Location:Login.php'); //redirect
 }
 
 ?>

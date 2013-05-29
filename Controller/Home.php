@@ -52,7 +52,7 @@ class Home {
 	}
 
 	public function render(){
-		require_once('../BudgetBuddy/View/' . $this->viewName . '.php');
+		require_once('../View/' . $this->viewName . '.php');
 		$view = new $this->viewName;
 		echo '<h1 class ="Home">Budget Buddy Home</h1><hr>';
 		//Render welcome and last login time

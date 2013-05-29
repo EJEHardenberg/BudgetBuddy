@@ -3,7 +3,7 @@
 
 include('../config.php');
 
-mysql_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASS);
+$link = mysql_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASS);
 if (!$link) {
     die('Could not connect: ' . mysql_error());
 }

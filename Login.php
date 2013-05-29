@@ -12,7 +12,7 @@
 			$_SESSION['userID'] = $_POST['username'];
 			unset($_POST['password']);
 			//Redirect back to index
-			header('Location:/BudgetBuddy/index.php');
+			header('Location:index.php');
 		}else{
 			$loginOk = false;
 		}
@@ -26,7 +26,7 @@
 
 	<head>
 		<title>Budget Buddy Login</title>
-		<link rel="stylesheet" href="/BudgetBuddy/CSS/Login.css" type="text/css" />
+		<link rel="stylesheet" href="CSS/Login.css" type="text/css" />
 	</head>
 
 	<body>

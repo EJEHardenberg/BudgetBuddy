@@ -18,7 +18,7 @@
 
 	<head>
 		<title>Budget Buddy Sign Up</title>
-		<link rel="stylesheet" href="/BudgetBuddy/CSS/Login.css" type="text/css" />
+		<link rel="stylesheet" href="CSS/Login.css" type="text/css" />
 	</head>
 
 	<body>
@@ -41,7 +41,7 @@
 						if($signedUp){
 							echo '<span id="Info"> You\'ve Signed Up! </span>';
 							//redirect to login
-							echo '<meta http-equiv="REFRESH" content="2; url=/BudgetBuddy/Login.php" />'; 
+							echo '<meta http-equiv="REFRESH" content="2; url=Login.php" />'; 
 						}
 						//redirect
 					}

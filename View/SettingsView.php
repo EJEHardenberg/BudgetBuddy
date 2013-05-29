@@ -11,7 +11,7 @@ class SettingsView extends View{
 		//We want to display a simple form with two text boxes and a drop down
 		//The trick is that the form drops out from a link that says Username.
 		echo '<div>';
-			echo '<form name ="ChangeUser" method="post" action= "/BudgetBuddy/Settings.php/User">';
+			echo '<form name ="ChangeUser" method="post" action= "Settings.php/User">';
 				echo '<h3 class = "changeLink" onClick="dropClicked('."'userDrop'".')"> Username </h3>';
 				echo '<div id="userDrop">';
 					echo 'Old Username: ';
@@ -26,7 +26,7 @@ class SettingsView extends View{
 
 	public function changePass(){
 		echo '<div>';
-			echo '<form name ="ChangePass" method="post" action= "/BudgetBuddy/Settings.php/Pass">';
+			echo '<form name ="ChangePass" method="post" action= "Settings.php/Pass">';
 				echo '<h3 class = "changeLink" onClick="dropClicked('."'passDrop'".')"> Password </h3>';
 				echo '<div id="passDrop">';
 					echo 'Old Password: ';
@@ -42,7 +42,7 @@ class SettingsView extends View{
 	public function changeTheme($themes){
 		//Drop down populated by possible themes
 		echo '<div>';
-			echo '<form name ="ChangeTheme" method="post" action= "/BudgetBuddy/Settings.php/Theme">';
+			echo '<form name ="ChangeTheme" method="post" action= "Settings.php/Theme">';
 				echo '<h3 class = "changeLink" onClick="dropClicked('."'themeDrop'".')">Theme</h3>';
 				echo '<div id="themeDrop">';
 					echo 'Select a theme from the dropdown and click submit<br />';
@@ -61,7 +61,7 @@ class SettingsView extends View{
 	public function TagManagerLink(){
 		//Displays the link to the tag manager
 		echo '<div>';
-			echo '<a class="tagManLink" href="/BudgetBuddy/Settings.php/Tag" >Click here for the Tag Manager</a>';
+			echo '<a class="tagManLink" href="Settings.php/Tag" >Click here for the Tag Manager</a>';
 		echo '</div>';
 	}
 
@@ -70,7 +70,7 @@ class SettingsView extends View{
 		echo '<ul class = "SubMenu">';
 		foreach ($links as $link) {
 			echo '<li>';
-			echo '<form name = "' . $link . '" method="post" action = "/BudgetBuddy/CheckBook.php/' . $account . ':' . $link . '">';
+			echo '<form name = "' . $link . '" method="post" action = "CheckBook.php/' . $account . ':' . $link . '">';
 			echo '<button class = "SubMenu"  type="submit">'. $link .'</button>';
 			echo '</form>';
 			echo '<li>';

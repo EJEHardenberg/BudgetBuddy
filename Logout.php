@@ -2,6 +2,6 @@
 session_start();
 unset($_SESSION);
 session_destroy();
-header('Location:../BudgetBuddy/index.php');
+header('Location:index.php');
 
 ?>
