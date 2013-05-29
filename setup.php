@@ -30,6 +30,31 @@ $loginTable = "CREATE TABLE IF NOT EXISTS logins (username VARCHAR(50) REFERENCE
 $accountsTable = "CREATE TABLE IF NOT EXISTS accounts (userid INT(10) REFERENCES userinfo(userid),name VARCHAR(30),amount VARCHAR(10),PRIMARY KEY(userid,name));";
 $transactionsTable = "CREATE TABLE IF NOT EXISTS transactions (userid INT(10) REFERENCES userinfo(userid),accountname VARCHAR(30) REFERENCES accounts(name),name VARCHAR(100),amount VARCHAR(15),date DATETIME )";;
 
+
+if(mysql_query($userTable,$link)){
+	echo "userinfo table created successfully\n";
+}else{
+	echo "Failed to create userinfo table\n";
+}
+
+if(mysql_query($loginTable,$link)){
+	echo "logins table created successfully\n";
+}else{
+	echo "Failed to create logins table\n";
+}
+
+if(mysql_query($accountsTable,$link)){
+	echo "accounts table created successfully\n";
+}else{
+	echo "Failed to create accounts table\n";
+}
+
+if(mysql_query($transactionsTable,$link)){
+	echo "transactions table created successfully\n";
+}else{
+	echo "Failed to create transactions table\n";
+}
+
 mysql_close($link);
 
 ?>
