@@ -98,7 +98,7 @@ class CheckBook{
 					$transactions = $this->db->getTransactionsForMonth($month,$this->userid,$this->accountToLoad);
 					//ADD BUTTON HERE
 					echo '<h5 id="DropDownH5" onmouseout="DropDownColorChange(); " onmouseover="DropDownColorChange();"  onclick="dropClicked(); ">+ Add Transaction </h5><br />';
-					echo '<form action = "CheckBook.php/'. $this->accountToLoad .':AddTransaction" method="post">';
+					echo '<form action = "/CheckBook.php/'. $this->accountToLoad .':AddTransaction" method="post">';
 					echo '<ul id="DropDownUL" >';
 						echo '<li id="DropDownLI"> Name: <input = "text" class ="trans" name="name" value = ""/> </li>';
 						echo '<li id="DropDownLI"> Amount: <input = "text" class ="trans" name="amt" value = ""/></li>';
@@ -157,7 +157,7 @@ class CheckBook{
 			case 'Add':
 				//Maybe I'll ask josh about validating input before submitting for the number stuff
 				echo '<div class ="largespacer"></div>';
-				echo '<form id="Login" name="login" method="post" action="CheckBook.php/:AddAccount">';
+				echo '<form id="Login" name="login" method="post" action="/CheckBook.php/:AddAccount">';
 				
 					echo '<label class="Login">Account Name<br />';
 					echo '</label>';
@@ -201,7 +201,7 @@ class CheckBook{
 					//Oh hey an account exists? Better make sure of that
 					//Put out a comfirmation screen:
 					echo '<div class ="largespacer"></div>';
-					echo '<form action = "CheckBook.php/' . ($this->accountToLoad) . ':DeleteYes" method="post"> ';
+					echo '<form action = "/CheckBook.php/' . ($this->accountToLoad) . ':DeleteYes" method="post"> ';
 						echo 'Deleting the account ' . $this->accountToLoad . ' is permanent and you will lose all transactions on this account, are you sure?';
 						echo '<div class ="largespacer"></div>';
 						echo '<button type = "submit" name="confirm" value = "yes">Delete This Account</button>';
@@ -236,7 +236,7 @@ class CheckBook{
 				//If theres an account to load than we should grab its data, populate the fields and pretty much do the same thing as add edit but with a different function
 				$info = $this->db->getAccountByName($this->accountToLoad,$this->userid);
 				echo '<div class ="largespacer"></div>';
-				echo '<form id="Login" name="login" method="post" action="CheckBook.php/' .$this->accountToLoad.':EditAccount">';
+				echo '<form id="Login" name="login" method="post" action="/CheckBook.php/' .$this->accountToLoad.':EditAccount">';
 				
 					echo '<label class="Login">Account Name<br />';
 					echo '</label>';
@@ -327,7 +327,7 @@ class CheckBook{
 
 					$info = $this->db->getTransactionInfo($this->transID);
 					echo '<div class ="largespacer"></div>';
-					echo '<form id="Login" name="login" method="post" action="CheckBook.php/' .$this->accountToLoad.':DOEditTransaction:'. $this->transID .'">';
+					echo '<form id="Login" name="login" method="post" action="/CheckBook.php/' .$this->accountToLoad.':DOEditTransaction:'. $this->transID .'">';
 					
 						echo '<label class="Login">Transaction Description<br />';
 						echo '</label>';

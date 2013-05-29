@@ -13,7 +13,7 @@ include_once( "../config.php");
 	<?php
 		//Echo out the proper theme
 		if(!isset($_SESSION['userID'])){
-			echo '<link rel="stylesheet" href="CSS/'  . DEFAULT_THEME . 'Theme.css" type="text/css" />';
+			echo '<link rel="stylesheet" href="/CSS/'  . DEFAULT_THEME . 'Theme.css" type="text/css" />';
 			header('Location:Login.php'); //redirect
 		}else{
 			//We need the database for personalized themes
@@ -25,9 +25,9 @@ include_once( "../config.php");
 			//a theme associated with a user, but whether or not that theme exists is iffy
 			
 			if(file_exists('CSS/' . $theme . 'Theme.css')){
-				echo '<link rel="stylesheet" href="CSS/'  . $theme . 'Theme.css" type="text/css" />';
+				echo '<link rel="stylesheet" href="/CSS/'  . $theme . 'Theme.css" type="text/css" />';
 			}else{
-				echo '<link rel="stylesheet" href="CSS/'  . DEFAULT_THEME . 'Theme.css" type="text/css" />';
+				echo '<link rel="stylesheet" href="/CSS/'  . DEFAULT_THEME . 'Theme.css" type="text/css" />';
 			}
 		}
 	?>
@@ -40,7 +40,7 @@ include_once( "../config.php");
 
 <?php
 
-require_once('/Controller/Settings.php');
+require_once('Controller/Settings.php');
 //This is where I'd include the users home page
 $settingControl = new Settings($_SESSION['userID']);
 //If for some reason the username isn't valid they go back to login

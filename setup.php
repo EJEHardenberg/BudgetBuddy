@@ -17,11 +17,13 @@ if (!$db_selected) {
   $sql = 'CREATE DATABASE ' . DATABASE_NAME;
 
   if (mysql_query($sql, $link)) {
-      echo "Database my_db created successfully\n";
+      echo "Database " .DATABASE_NAME ." created successfully\n";
   } else {
       die( 'Error creating database: ' . mysql_error() . "\n");
   }
 }
+//Actually select the database
+$db_selected = mysql_select_db(DATABASE_NAME, $link);
 
 //Database is selected, create tables
 

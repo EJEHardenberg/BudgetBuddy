@@ -18,14 +18,14 @@
 
 	<head>
 		<title>Budget Buddy Sign Up</title>
-		<link rel="stylesheet" href="CSS/Login.css" type="text/css" />
+		<link rel="stylesheet" href="/CSS/Login.css" type="text/css" />
 	</head>
 
 	<body>
 
 		<div class="Form">
 			<!-- Sign in form -->
-			<form id="Login" name="login" method="post" action="Signup.php">
+			<form id="Login" name="login" method="post" action="/Signup.php">
 				<h1 class="Login">Budget Buddy Sign Up</h1>
 				<?php 
 					//This is essentially the debug area for a user

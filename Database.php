@@ -68,7 +68,8 @@ class Database{
 
 	private function compareHashes($hash1, $hash2){
 		$hashgood = true;
-		for($i = 0; $i < strlen($hash1); $i++){
+		error_log($hash1 . ' and the other ' . $hash2);
+		for($i = 0; $i < strlen($hash1 && $i < strlen($hash2)); $i++){
 			if($hash1[$i] != $hash2[$i]){
 				$hashgood = false;
 			}

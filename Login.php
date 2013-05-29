@@ -26,7 +26,7 @@
 
 	<head>
 		<title>Budget Buddy Login</title>
-		<link rel="stylesheet" href="CSS/Login.css" type="text/css" />
+		<link rel="stylesheet" href="/CSS/Login.css" type="text/css" />
 	</head>
 
 	<body>
